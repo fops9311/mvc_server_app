@@ -1,3 +1,5 @@
+//go:generate echo "creating some files, based on resource spec"
+//go:generate go run ./gogenerate/mvcgen.go page user object
 package main
 
 import (
