@@ -65,26 +65,47 @@ import (
 	"github.com/fops9311/mvc_server_app/views/{{.Name}}_view"
 ){{ end }}//import
 var Resource resource.Resurce
-var new_{{.Name}} controller.Action = func(params map[string]string) (result string, err error) {return "", nil}
-var get_{{.Name}}s controller.Action = func(params map[string]string) (result string, err error) {return "", nil}
-var get_{{.Name}}_by_id controller.Action = func(params map[string]string) (result string, err error) {return "", nil}
-var update_{{.Name}}_by_id controller.Action = func(params map[string]string) (result string, err error) {return "", nil}
-var delete_{{.Name}}_by_id controller.Action = func(params map[string]string) (result string, err error) {return "", nil}
+var new_{{.Name}} controller.Action = func(params map[string]string) (result string, err error) {
+	buf := bytes.NewBuffer([]byte{})
+	err = {{.Name}}_view.New_{{.Name}}(params, buf)
+	return buf.String(), err
+}
+var get_{{.Name}}s controller.Action = func(params map[string]string) (result string, err error) {
+	buf := bytes.NewBuffer([]byte{})
+	err = {{.Name}}_view.Get_{{.Name}}s(params, buf)
+	return buf.String(), err
+}
+var get_{{.Name}}_by_id controller.Action = func(params map[string]string) (result string, err error) {
+	buf := bytes.NewBuffer([]byte{})
+	err = {{.Name}}_view.Get_{{.Name}}_by_id(params, buf)
+	return buf.String(), err
+}
+var update_{{.Name}}_by_id controller.Action = func(params map[string]string) (result string, err error) {
+	buf := bytes.NewBuffer([]byte{})
+	err = {{.Name}}_view.Update_{{.Name}}_by_id(params, buf)
+	return buf.String(), err
+}
+var delete_{{.Name}}_by_id controller.Action = func(params map[string]string) (result string, err error) {
+	buf := bytes.NewBuffer([]byte{})
+	err = {{.Name}}_view.Delete_{{.Name}}_by_id(params, buf)
+	return buf.String(), err
+}
 
 func init() {
+	{{.Name}}_view.Init()
 	init_begin()
 	Resource = resource.NewResource()
 	Resource.Key = "/{{.Name}}"
 	Resource.Actions = []resource.ActionPath{
 		{
 			Verb:       "POST",
-			Path:       "/",
+			Path:       "",
 			Middleware: make([]string, 0),
 			Action:     new_{{.Name}},
 		},
 		{
 			Verb:       "GET",
-			Path:       "/",
+			Path:       "",
 			Middleware: make([]string, 0),
 			Action:     get_{{.Name}}s,
 		},
@@ -120,7 +141,51 @@ import (
 ){{ end }}//import
 func Dummy(){
 	fmt.Print("hi")
-}`
+}
+
+func renderTemplate(params map[string]string, w io.Writer, templ string, templateName string) (err error) {
+	tmpl, err := template.New(templateName).Parse(templ)
+	if err != nil {
+		return err
+	}
+	err = tmpl.Execute(w, params)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+
+func Get_{{.Name}}_by_id(params map[string]string, w io.Writer) (err error) {
+	return renderTemplate(params, w, get_{{.Name}}_by_id_template, "get_{{.Name}}_by_id")
+}
+
+
+func New_{{.Name}}(params map[string]string, w io.Writer) (err error) {
+	return renderTemplate(params, w, new_{{.Name}}_template, "new_{{.Name}}")
+}
+
+
+func Get_{{.Name}}s(params map[string]string, w io.Writer) (err error) {
+	return renderTemplate(params, w, get_{{.Name}}s_template, "get_{{.Name}}s")
+}
+
+func Update_{{.Name}}_by_id(params map[string]string, w io.Writer) (err error) {
+	return renderTemplate(params, w, update_{{.Name}}_by_id_template, "update_{{.Name}}_by_id")
+}
+
+func Delete_{{.Name}}_by_id(params map[string]string, w io.Writer) (err error) {
+	return renderTemplate(params, w, delete_{{.Name}}_by_id_template, "delete_{{.Name}}_by_id")
+}
+var get_{{.Name}}_by_id_template string
+var new_{{.Name}}_template string
+var get_{{.Name}}s_template string
+var update_{{.Name}}_by_id_template string
+var delete_{{.Name}}_by_id_template string
+func Init(){
+	init_continue()
+}
+`
 
 func makeTemplateFile(name string, filecontents string, texttemplate string, w io.Writer) (err error) {
 	data := struct {

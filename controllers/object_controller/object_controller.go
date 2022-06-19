@@ -9,28 +9,49 @@ import (
 	"github.com/fops9311/mvc_server_app/views/object_view"
 )
 
-       //import
+ //import
 var Resource resource.Resurce
-var new_object controller.Action = func(params map[string]string) (result string, err error) {return "", nil}
-var get_objects controller.Action = func(params map[string]string) (result string, err error) {return "", nil}
-var get_object_by_id controller.Action = func(params map[string]string) (result string, err error) {return "", nil}
-var update_object_by_id controller.Action = func(params map[string]string) (result string, err error) {return "", nil}
-var delete_object_by_id controller.Action = func(params map[string]string) (result string, err error) {return "", nil}
+var new_object controller.Action = func(params map[string]string) (result string, err error) {
+	buf := bytes.NewBuffer([]byte{})
+	err = object_view.New_object(params, buf)
+	return buf.String(), err
+}
+var get_objects controller.Action = func(params map[string]string) (result string, err error) {
+	buf := bytes.NewBuffer([]byte{})
+	err = object_view.Get_objects(params, buf)
+	return buf.String(), err
+}
+var get_object_by_id controller.Action = func(params map[string]string) (result string, err error) {
+	buf := bytes.NewBuffer([]byte{})
+	err = object_view.Get_object_by_id(params, buf)
+	return buf.String(), err
+}
+var update_object_by_id controller.Action = func(params map[string]string) (result string, err error) {
+	buf := bytes.NewBuffer([]byte{})
+	err = object_view.Update_object_by_id(params, buf)
+	return buf.String(), err
+}
+var delete_object_by_id controller.Action = func(params map[string]string) (result string, err error) {
+	buf := bytes.NewBuffer([]byte{})
+	err = object_view.Delete_object_by_id(params, buf)
+	return buf.String(), err
+}
 
 func init() {
+	object_view.Init()
 	init_begin()
 	Resource = resource.NewResource()
 	Resource.Key = "/object"
 	Resource.Actions = []resource.ActionPath{
 		{
 			Verb:       "POST",
-			Path:       "/",
+			Path:       "",
 			Middleware: make([]string, 0),
 			Action:     new_object,
 		},
 		{
 			Verb:       "GET",
-			Path:       "/",
+			Path:       "",
 			Middleware: make([]string, 0),
 			Action:     get_objects,
 		},
@@ -61,13 +82,5 @@ func init() {
 //DO NOT CHANGE ABOVE --GENERATED--
 func init_begin() {
 
-	get_objects = func(params map[string]string) (result string, err error) {
-		buf := bytes.NewBuffer([]byte{})
-		err = object_view.Render(params, buf)
-		return buf.String(), err
-	}
-	new_object = func(params map[string]string) (result string, err error) {
-		return "Hi", nil
-	}
 }
 func init_continue() {}
