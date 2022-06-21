@@ -7,6 +7,7 @@ import (
 	resource "github.com/fops9311/mvc_server_app/model/resource"
 	server "github.com/fops9311/mvc_server_app/model/server"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func makeParams(c echo.Context) (params map[string]string) {
@@ -22,8 +23,12 @@ type Echo_server struct {
 	e *echo.Echo
 }
 
-func (er *Echo_server) Init() server.Server {
+func (er *Echo_server) NewServer() server.Server {
 	er.e = echo.New()
+	er.e.Pre((middleware.WWWRedirect()))
+	er.e.Pre(middleware.Rewrite(map[string]string{
+		"/": "/v1/home/index",
+	}))
 	return er
 }
 func (er *Echo_server) AddAction(Act resource.ActionPath) (err error) {
@@ -32,25 +37,25 @@ func (er *Echo_server) AddAction(Act resource.ActionPath) (err error) {
 	case "GET":
 		er.e.GET(Act.Path, func(c echo.Context) error {
 			res, _ := Act.Action(makeParams(c))
-			return c.String(http.StatusOK, res)
+			return c.HTML(http.StatusOK, res)
 		})
 		fmt.Printf("Path %s added\n", Act.Path)
 	case "POST":
 		er.e.POST(Act.Path, func(c echo.Context) error {
 			res, _ := Act.Action(makeParams(c))
-			return c.String(http.StatusOK, res)
+			return c.HTML(http.StatusOK, res)
 		})
 		fmt.Printf("Path %s added\n", Act.Path)
 	case "PUT":
 		er.e.PUT(Act.Path, func(c echo.Context) error {
 			res, _ := Act.Action(makeParams(c))
-			return c.String(http.StatusOK, res)
+			return c.HTML(http.StatusOK, res)
 		})
 		fmt.Printf("Path %s added\n", Act.Path)
 	case "DELETE":
 		er.e.DELETE(Act.Path, func(c echo.Context) error {
 			res, _ := Act.Action(makeParams(c))
-			return c.String(http.StatusOK, res)
+			return c.HTML(http.StatusOK, res)
 		})
 		fmt.Printf("Path %s added\n", Act.Path)
 	}

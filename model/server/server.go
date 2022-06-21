@@ -5,7 +5,7 @@ import (
 )
 
 type Server interface {
-	Init() Server
+	NewServer() Server
 	AddAction(Action resource.ActionPath) (err error)
 	AddResurce(R resource.Resurce, root string) (err error)
 	Serve(port string) (err error)

@@ -96,38 +96,37 @@ func init() {
 	init_begin()
 	Resource = resource.NewResource()
 	Resource.Key = "/{{.Name}}"
-	Resource.Actions = []resource.ActionPath{
-		{
-			Verb:       "POST",
-			Path:       "",
-			Middleware: make([]string, 0),
-			Action:     new_{{.Name}},
-		},
-		{
-			Verb:       "GET",
-			Path:       "",
-			Middleware: make([]string, 0),
-			Action:     get_{{.Name}}s,
-		},
-		{
-			Verb:       "GET",
-			Path:       "/:{{.Name}}_id",
-			Middleware: make([]string, 0),
-			Action:     get_{{.Name}}_by_id,
-		},
-		{
-			Verb:       "PUT",
-			Path:       "/:{{.Name}}_id",
-			Middleware: make([]string, 0),
-			Action:     update_{{.Name}}_by_id,
-		},
-		{
-			Verb:       "DELETE",
-			Path:       "/:{{.Name}}_id",
-			Middleware: make([]string, 0),
-			Action:     delete_{{.Name}}_by_id,
-		},
+	Resource.Actions["new_{{.Name}}"] = resource.ActionPath{ 	
+		Verb:       "POST",
+		Path:       "",
+		Middleware: make([]string, 0),
+		Action:     new_{{.Name}},
 	}
+	Resource.Actions["get_{{.Name}}s"] = resource.ActionPath{
+		Verb:       "GET",
+		Path:       "",
+		Middleware: make([]string, 0),
+		Action:     get_{{.Name}}s,
+	}
+	Resource.Actions["get_{{.Name}}_by_id"] = resource.ActionPath{
+		Verb:       "GET",
+		Path:       "/:{{.Name}}_id",
+		Middleware: make([]string, 0),
+		Action:     get_{{.Name}}_by_id,
+	}
+	Resource.Actions["update_{{.Name}}_by_id"] = resource.ActionPath{
+		Verb:       "PUT",
+		Path:       "/:{{.Name}}_id",
+		Middleware: make([]string, 0),
+		Action:     update_{{.Name}}_by_id,
+	}
+	Resource.Actions["delete_{{.Name}}_by_id"] = resource.ActionPath{
+		Verb:       "DELETE",
+		Path:       "/:{{.Name}}_id",
+		Middleware: make([]string, 0),
+		Action:     delete_{{.Name}}_by_id,
+	}
+	
 	init_continue()
 }
 

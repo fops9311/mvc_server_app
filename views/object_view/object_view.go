@@ -1,11 +1,12 @@
 package object_view
+
 //import
 import (
 	"fmt"
+	"html/template"
 	"io"
-	"text/template"
-)   //import
-func Dummy(){
+) //import
+func Dummy() {
 	fmt.Print("hi")
 }
 
@@ -21,16 +22,13 @@ func renderTemplate(params map[string]string, w io.Writer, templ string, templat
 	return nil
 }
 
-
 func Get_object_by_id(params map[string]string, w io.Writer) (err error) {
 	return renderTemplate(params, w, get_object_by_id_template, "get_object_by_id")
 }
 
-
 func New_object(params map[string]string, w io.Writer) (err error) {
 	return renderTemplate(params, w, new_object_template, "new_object")
 }
-
 
 func Get_objects(params map[string]string, w io.Writer) (err error) {
 	return renderTemplate(params, w, get_objects_template, "get_objects")
@@ -43,12 +41,14 @@ func Update_object_by_id(params map[string]string, w io.Writer) (err error) {
 func Delete_object_by_id(params map[string]string, w io.Writer) (err error) {
 	return renderTemplate(params, w, delete_object_by_id_template, "delete_object_by_id")
 }
+
 var get_object_by_id_template string
 var new_object_template string
 var get_objects_template string
 var update_object_by_id_template string
 var delete_object_by_id_template string
-func Init(){
+
+func Init() {
 	init_continue()
 }
 
