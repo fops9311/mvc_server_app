@@ -1,5 +1,4 @@
 package page_controller
-
 //import
 import (
 	"bytes"
@@ -7,7 +6,7 @@ import (
 	"github.com/fops9311/mvc_server_app/model/controller"
 	"github.com/fops9311/mvc_server_app/model/resource"
 	"github.com/fops9311/mvc_server_app/views/page_view"
-) //import
+)     //import
 var Resource resource.Resurce
 var new_page controller.Action = func(params map[string]string) (result string, err error) {
 	buf := bytes.NewBuffer([]byte{})
@@ -40,7 +39,8 @@ func init() {
 	init_begin()
 	Resource = resource.NewResource()
 	Resource.Key = "/page"
-	Resource.Actions["new_page"] = resource.ActionPath{Verb: "POST",
+	Resource.Actions["new_page"] = resource.ActionPath{ 	
+		Verb:       "POST",
 		Path:       "",
 		Middleware: make([]string, 0),
 		Action:     new_page,
@@ -69,7 +69,7 @@ func init() {
 		Middleware: make([]string, 0),
 		Action:     delete_page_by_id,
 	}
-
+	
 	init_continue()
 }
 
@@ -80,6 +80,7 @@ func init() {
 func init_begin() {
 	get_page_by_id = func(params map[string]string) (result string, err error) {
 		params["meta_title"] = "title"
+		params["meta_uri"] = "/v1/pages/"
 		buf := bytes.NewBuffer([]byte{})
 		err = page_view.Get_page_by_id(params, buf)
 		return buf.String(), err

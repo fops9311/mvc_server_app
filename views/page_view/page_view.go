@@ -1,5 +1,4 @@
 package page_view
-
 //import
 import (
 	"fmt"
@@ -7,8 +6,8 @@ import (
 	"io"
 
 	layout "github.com/fops9311/mvc_server_app/views/layout"
-) //import
-func Dummy() {
+)     //import
+func Dummy(){
 	fmt.Print("hi")
 }
 
@@ -24,13 +23,16 @@ func renderTemplate(params map[string]string, w io.Writer, templ string, templat
 	return nil
 }
 
+
 func Get_page_by_id(params map[string]string, w io.Writer) (err error) {
 	return renderTemplate(params, w, get_page_by_id_template, "get_page_by_id")
 }
 
+
 func New_page(params map[string]string, w io.Writer) (err error) {
 	return renderTemplate(params, w, new_page_template, "new_page")
 }
+
 
 func Get_pages(params map[string]string, w io.Writer) (err error) {
 	return renderTemplate(params, w, get_pages_template, "get_pages")
@@ -43,14 +45,12 @@ func Update_page_by_id(params map[string]string, w io.Writer) (err error) {
 func Delete_page_by_id(params map[string]string, w io.Writer) (err error) {
 	return renderTemplate(params, w, delete_page_by_id_template, "delete_page_by_id")
 }
-
 var get_page_by_id_template string
 var new_page_template string
 var get_pages_template string
 var update_page_by_id_template string
 var delete_page_by_id_template string
-
-func Init() {
+func Init(){
 	init_continue()
 }
 
@@ -59,29 +59,40 @@ func Init() {
 func init_continue() {
 
 	var login_page_by_id_body = `
-	
-  	<div class="col d-flex justify-content-center mt-5 mb-5 flex-grow-1 h-100">
-	  <div class="card" style="width: 18rem;">
-  	    <div class="card-body">
-		<form>
-		<div class="mb-3">
-		  <label for="exampleInputEmail1" class="form-label">Email address</label>
-		  <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-		  <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+	<main style="display: flex; min-height: 100vh; flex-direction: column;">
+<div class="row">
+  <div class="column">
+  	<div class="panel">
+	  <p class="panel-heading">
+		Assets
+	  </p>
+
+		<div class="panel-block">
+		<p class="control has-icons-left">
+		<input class="input" type="text" placeholder="Search">
+		<span class="icon is-left">
+			<i class="fas fa-search" aria-hidden="true"></i>
+		</span>
+		</p>
 		</div>
-		<div class="mb-3">
-		  <label for="exampleInputPassword1" class="form-label">Password</label>
-		  <input type="password" class="form-control" id="exampleInputPassword1">
-		</div>
-		<div class="mb-3 form-check">
-		  <input type="checkbox" class="form-check-input" id="exampleCheck1">
-		  <label class="form-check-label" for="exampleCheck1">Check me out</label>
-		</div>
-		<button type="submit" class="btn btn-primary">Submit</button>
-	  </form>
-	    </div>
-	  </div>
+
+		<p class="panel-tabs">
+		  <a class="is-active">All</a>
+		  <a>Stared</a>
+		  <a>Branch</a>
+	    </p>
 	</div>
+  </div>
+
+  <div class="column">
+  	<div class="panel">
+	  <p class="panel-heading">
+		Dashboard
+	  </p>
+	</div>
+  </div>
+</div>
+	</main>
 `
 	get_page_by_id_template = layout.Layout(login_page_by_id_body)
 }

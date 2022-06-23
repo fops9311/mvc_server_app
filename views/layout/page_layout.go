@@ -9,67 +9,109 @@ func Layout(payload string) (res string) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <title>{{ .meta_title}} {{ .page_id}}</title>
   </head>
   <body>
 	`
 	var page_header string = `
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	<div class="container-fluid">
-		<a class="navbar-brand" href="#">{{ .meta_title}}</a>
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarNavDropdown">
-		<ul class="navbar-nav">
-			<li class="nav-item">
-			<a class="nav-link active" aria-current="page" href="/v1/home/">Home</a>
-			</li>
-			<li class="nav-item">
-			<a class="nav-link" href="/v1/home/features">Features</a>
-			</li>
-			<li class="nav-item">
-			<a class="nav-link" href="/v1/home/pricing">Pricing</a>
-			</li>
-			<li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-				Dropdown link
-			</a>
-			<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-				<li><a class="dropdown-item" href="#">Action</a></li>
-				<li><a class="dropdown-item" href="#">Another action</a></li>
-				<li><a class="dropdown-item" href="#">Something else here</a></li>
-			</ul>
-			</li>
-		</ul>
-		</div>
+	<header>
+	<nav class="navbar" role="navigation" aria-label="main navigation">
+	<div class="navbar-brand">
+	  <a class="navbar-item">
+		<img src="/favicon_XL.ico" width="28" height="28">
+	  </a>
+	  <span class="navbar-item">
+	    real-time-obj
+	  </span>
+  
+	  <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+		<span aria-hidden="true"></span>
+		<span aria-hidden="true"></span>
+		<span aria-hidden="true"></span>
+	  </a>
 	</div>
-	</nav>
+  
+	<div id="navbarBasicExample" class="navbar-menu">
+	  <div class="navbar-start">
+		<a class="navbar-item">
+		  Home
+		</a>
+  
+		<a class="navbar-item">
+		  Documentation
+		</a>
+  
+		<div class="navbar-item has-dropdown is-hoverable">
+		  <a class="navbar-link">
+			More
+		  </a>
+  
+		  <div class="navbar-dropdown">
+			<a class="navbar-item">
+			  About
+			</a>
+			<a class="navbar-item">
+			  Jobs
+			</a>
+			<a class="navbar-item">
+			  Contact
+			</a>
+			<hr class="navbar-divider">
+			<a class="navbar-item">
+			  Report an issue
+			</a>
+		  </div>
+		</div>
+	  </div>
+  
+	  <div class="navbar-end">
+		<div class="navbar-item">
+		  <div class="buttons">
+			<a class="button is-primary">
+			  <strong>Sign up</strong>
+			</a>
+			<a class="button is-light">
+			  Log in
+			</a>
+		  </div>
+		</div>
+	  </div>
+	</div>
+  </nav>
+    </header>  
 	`
 	var page_footer string = `
-	<footer class="bg-light text-center text-lg-start">
-  	<!-- Copyright -->
-  		<div class="text-center p-3 mt-5 fixed-bottom" style="background-color: rgba(0, 0, 0, 0.1);">
-    © 2020 Copyright:
-    		<a class="text-dark" href="http://app.real-time-obj.ru/">app.real-time-obj.ru</a>
-  		</div>
-  	<!-- Copyright -->
-	</footer>
+	<footer class="page-footer">
+	<div class="container">
+	  <div class="row">
+		<div class="col l6 s12">
+		  <h5 class="white-text">Footer Content</h5>
+		  <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
+		</div>
+		<div class="col l4 offset-l2 s12">
+		  <h5 class="white-text">Links</h5>
+		  <ul>
+			<li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
+			<li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
+			<li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+			<li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
+		  </ul>
+		</div>
+	  </div>
+	</div>
+	<div class="footer-copyright">
+	  <div class="container">
+	  © 2014 Copyright Text
+	  <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+	  </div>
+	</div>
+  </footer>
 	`
 	var after_body string = `
-    <!-- Optional JavaScript; choose one of the two! -->
-
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-    -->
   </body>
 </html>
 	`

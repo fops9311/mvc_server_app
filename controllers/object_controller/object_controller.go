@@ -9,7 +9,7 @@ import (
 	"github.com/fops9311/mvc_server_app/views/object_view"
 )
 
-     //import
+       //import
 var Resource resource.Resurce
 var new_object controller.Action = func(params map[string]string) (result string, err error) {
 	buf := bytes.NewBuffer([]byte{})
@@ -42,35 +42,36 @@ func init() {
 	init_begin()
 	Resource = resource.NewResource()
 	Resource.Key = "/object"
-	Resource.Actions["new_object"] = resource.ActionPath{ 	Verb:       "POST",
-																Path:       "",
-																Middleware: make([]string, 0),
-																Action:     new_object,
-															}
+	Resource.Actions["new_object"] = resource.ActionPath{ 	
+		Verb:       "POST",
+		Path:       "",
+		Middleware: make([]string, 0),
+		Action:     new_object,
+	}
 	Resource.Actions["get_objects"] = resource.ActionPath{
-																Verb:       "GET",
-																Path:       "",
-																Middleware: make([]string, 0),
-																Action:     get_objects,
-															}
+		Verb:       "GET",
+		Path:       "",
+		Middleware: make([]string, 0),
+		Action:     get_objects,
+	}
 	Resource.Actions["get_object_by_id"] = resource.ActionPath{
-																Verb:       "GET",
-																Path:       "/:object_id",
-																Middleware: make([]string, 0),
-																Action:     get_object_by_id,
-															}
+		Verb:       "GET",
+		Path:       "/:object_id",
+		Middleware: make([]string, 0),
+		Action:     get_object_by_id,
+	}
 	Resource.Actions["update_object_by_id"] = resource.ActionPath{
-																Verb:       "PUT",
-																Path:       "/:object_id",
-																Middleware: make([]string, 0),
-																Action:     update_object_by_id,
-															}
+		Verb:       "PUT",
+		Path:       "/:object_id",
+		Middleware: make([]string, 0),
+		Action:     update_object_by_id,
+	}
 	Resource.Actions["delete_object_by_id"] = resource.ActionPath{
-																	Verb:       "DELETE",
-																	Path:       "/:object_id",
-																	Middleware: make([]string, 0),
-																	Action:     delete_object_by_id,
-																}
+		Verb:       "DELETE",
+		Path:       "/:object_id",
+		Middleware: make([]string, 0),
+		Action:     delete_object_by_id,
+	}
 	
 	init_continue()
 }
