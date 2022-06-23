@@ -24,16 +24,22 @@ func main() {
 		fmt.Printf("%d gen resource %s\n", i, name)
 		genFile(workdir+string(os.PathSeparator)+"controllers", name, [2]string{"controller", ".go"}, controllerTemplate, makeTemplateFile)
 		genFile(workdir+string(os.PathSeparator)+"views", name, [2]string{"view", ".go"}, viewTemplate, makeTemplateFile)
-		genFile(workdir+string(os.PathSeparator)+"templates", name, [2]string{"template", ".html"}, "", makeEmptyFile)
+		genFile(workdir+string(os.PathSeparator)+"templates", name, [2]string{"index", ".html"}, "", makeEmptyFile)
+		genFile(workdir+string(os.PathSeparator)+"templates", name, [2]string{"edit", ".html"}, "", makeEmptyFile)
+		genFile(workdir+string(os.PathSeparator)+"templates", name, [2]string{"new", ".html"}, "", makeEmptyFile)
+		genFile(workdir+string(os.PathSeparator)+"templates", name, [2]string{"show", ".html"}, "", makeEmptyFile)
+		genFile(workdir+string(os.PathSeparator)+"templates", name, [2]string{"create", ".html"}, "", makeEmptyFile)
+		genFile(workdir+string(os.PathSeparator)+"templates", name, [2]string{"update", ".html"}, "", makeEmptyFile)
+		genFile(workdir+string(os.PathSeparator)+"templates", name, [2]string{"delete", ".html"}, "", makeEmptyFile)
 	}
 }
 func genFile(dir string, name string, suff [2]string, template string, maker func(name string, filecontents string, texttemplate string, w io.Writer) (err error)) {
-	var path = fmt.Sprintf("%s%s%s_%s", dir, string(os.PathSeparator), name, suff[0])
+	var path = fmt.Sprintf("%s%s%s", dir, string(os.PathSeparator), name)
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		os.Mkdir(path, 0775)
 		fmt.Printf("making dir %s\n", path)
 	}
-	path = fmt.Sprint(dir, string(os.PathSeparator), name, "_", suff[0], string(os.PathSeparator), name, "_", suff[0], suff[1])
+	path = fmt.Sprint(dir, string(os.PathSeparator), name, string(os.PathSeparator), name, "_", suff[0], suff[1])
 	var filecontents string
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		filecontents = ""
@@ -63,71 +69,94 @@ var controllerTemplate string = `package {{.Name}}_controller
 import (
 	"github.com/fops9311/mvc_server_app/model/controller"
 	"github.com/fops9311/mvc_server_app/model/resource"
-	"github.com/fops9311/mvc_server_app/views/{{.Name}}_view"
+	view "github.com/fops9311/mvc_server_app/views/{{.Name}}"
 ){{ end }}//import
 var Resource resource.Resurce
-var new_{{.Name}} controller.Action = func(params map[string]string) (result string, err error) {
+
+var Index controller.Action = func(params map[string]string) (result string, err error) {
 	buf := bytes.NewBuffer([]byte{})
-	err = {{.Name}}_view.New_{{.Name}}(params, buf)
+	err = view.Index(params, buf)
 	return buf.String(), err
 }
-var get_{{.Name}}s controller.Action = func(params map[string]string) (result string, err error) {
+var Edit controller.Action = func(params map[string]string) (result string, err error) {
 	buf := bytes.NewBuffer([]byte{})
-	err = {{.Name}}_view.Get_{{.Name}}s(params, buf)
+	err = view.Edit(params, buf)
 	return buf.String(), err
 }
-var get_{{.Name}}_by_id controller.Action = func(params map[string]string) (result string, err error) {
+var New controller.Action = func(params map[string]string) (result string, err error) {
 	buf := bytes.NewBuffer([]byte{})
-	err = {{.Name}}_view.Get_{{.Name}}_by_id(params, buf)
+	err = view.New(params, buf)
 	return buf.String(), err
 }
-var update_{{.Name}}_by_id controller.Action = func(params map[string]string) (result string, err error) {
+var Show controller.Action = func(params map[string]string) (result string, err error) {
 	buf := bytes.NewBuffer([]byte{})
-	err = {{.Name}}_view.Update_{{.Name}}_by_id(params, buf)
+	err = view.Show(params, buf)
 	return buf.String(), err
 }
-var delete_{{.Name}}_by_id controller.Action = func(params map[string]string) (result string, err error) {
+var Create controller.Action = func(params map[string]string) (result string, err error) {
 	buf := bytes.NewBuffer([]byte{})
-	err = {{.Name}}_view.Delete_{{.Name}}_by_id(params, buf)
+	err = view.Create(params, buf)
+	return buf.String(), err
+}
+var Update controller.Action = func(params map[string]string) (result string, err error) {
+	buf := bytes.NewBuffer([]byte{})
+	err = view.Update(params, buf)
+	return buf.String(), err
+}
+var Delete controller.Action = func(params map[string]string) (result string, err error) {
+	buf := bytes.NewBuffer([]byte{})
+	err = view.Delete(params, buf)
 	return buf.String(), err
 }
 
 func init() {
-	{{.Name}}_view.Init()
+	view.Init()
 	init_begin()
 	Resource = resource.NewResource()
 	Resource.Key = "/{{.Name}}"
-	Resource.Actions["new_{{.Name}}"] = resource.ActionPath{ 	
+	Resource.Actions["Index"] = resource.ActionPath{ 	
+		Verb:       "GET",
+		Path:       "",
+		Middleware: make([]string, 0),
+		Action:     Index,
+	}
+	Resource.Actions["Edit"] = resource.ActionPath{ 	
+		Verb:       "GET",
+		Path:       "/:{{.Name}}_id/edit",
+		Middleware: make([]string, 0),
+		Action:     Edit,
+	}
+	Resource.Actions["New"] = resource.ActionPath{ 	
+		Verb:       "GET",
+		Path:       "/new",
+		Middleware: make([]string, 0),
+		Action:     New,
+	}
+	Resource.Actions["Show"] = resource.ActionPath{ 	
+		Verb:       "GET",
+		Path:       "/:{{.Name}}_id",
+		Middleware: make([]string, 0),
+		Action:     Show,
+	}
+	Resource.Actions["Create"] = resource.ActionPath{ 	
 		Verb:       "POST",
 		Path:       "",
 		Middleware: make([]string, 0),
-		Action:     new_{{.Name}},
+		Action:     Create,
 	}
-	Resource.Actions["get_{{.Name}}s"] = resource.ActionPath{
-		Verb:       "GET",
-		Path:       "",
-		Middleware: make([]string, 0),
-		Action:     get_{{.Name}}s,
-	}
-	Resource.Actions["get_{{.Name}}_by_id"] = resource.ActionPath{
-		Verb:       "GET",
-		Path:       "/:{{.Name}}_id",
-		Middleware: make([]string, 0),
-		Action:     get_{{.Name}}_by_id,
-	}
-	Resource.Actions["update_{{.Name}}_by_id"] = resource.ActionPath{
+	Resource.Actions["Update"] = resource.ActionPath{ 	
 		Verb:       "PUT",
 		Path:       "/:{{.Name}}_id",
 		Middleware: make([]string, 0),
-		Action:     update_{{.Name}}_by_id,
+		Action:     Update,
 	}
-	Resource.Actions["delete_{{.Name}}_by_id"] = resource.ActionPath{
+	Resource.Actions["Delete"] = resource.ActionPath{ 	
 		Verb:       "DELETE",
 		Path:       "/:{{.Name}}_id",
 		Middleware: make([]string, 0),
-		Action:     delete_{{.Name}}_by_id,
+		Action:     Delete,
 	}
-	
+
 	init_continue()
 }
 
@@ -138,6 +167,7 @@ var viewTemplate string = `package {{.Name}}_view
 //import{{ if .Import -}} {{ .Import}} {{ else }} 
 import (
 	"fmt"
+	"github.com/fops9311/mvc_server_app/tassets"
 ){{ end }}//import
 func Dummy(){
 	fmt.Print("hi")
@@ -156,33 +186,53 @@ func renderTemplate(params map[string]string, w io.Writer, templ string, templat
 }
 
 
-func Get_{{.Name}}_by_id(params map[string]string, w io.Writer) (err error) {
-	return renderTemplate(params, w, get_{{.Name}}_by_id_template, "get_{{.Name}}_by_id")
+var Index func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error){
+	return renderTemplate(params, w, index, "{{.Name}}_Index")
 }
 
-
-func New_{{.Name}}(params map[string]string, w io.Writer) (err error) {
-	return renderTemplate(params, w, new_{{.Name}}_template, "new_{{.Name}}")
+var Edit func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error){
+	return renderTemplate(params, w, edit, "{{.Name}}_Edit")
 }
 
-
-func Get_{{.Name}}s(params map[string]string, w io.Writer) (err error) {
-	return renderTemplate(params, w, get_{{.Name}}s_template, "get_{{.Name}}s")
+var New func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error){
+	return renderTemplate(params, w, new, "{{.Name}}_New")
 }
 
-func Update_{{.Name}}_by_id(params map[string]string, w io.Writer) (err error) {
-	return renderTemplate(params, w, update_{{.Name}}_by_id_template, "update_{{.Name}}_by_id")
+var Show func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error){
+	return renderTemplate(params, w, show, "{{.Name}}_Show")
 }
 
-func Delete_{{.Name}}_by_id(params map[string]string, w io.Writer) (err error) {
-	return renderTemplate(params, w, delete_{{.Name}}_by_id_template, "delete_{{.Name}}_by_id")
+var Create func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error){
+	return renderTemplate(params, w, create, "{{.Name}}_Create")
 }
-var get_{{.Name}}_by_id_template string
-var new_{{.Name}}_template string
-var get_{{.Name}}s_template string
-var update_{{.Name}}_by_id_template string
-var delete_{{.Name}}_by_id_template string
+
+var Update func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error){
+	return renderTemplate(params, w, update, "{{.Name}}_Update")
+}
+
+var Delete func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error){
+	return renderTemplate(params, w, delete, "{{.Name}}_Delete")
+}
+
+var index string
+var edit string
+var new string
+var show string
+var create string
+var update string
+var delete string
+
+
 func Init(){
+	tassets.InitDir("./templates")
+	index = tassets.GetAsset("templates/{{ .Name}}/{{ .Name}}_index.html")
+	edit = tassets.GetAsset("templates/{{ .Name}}/{{ .Name}}_edit.html")
+	new = tassets.GetAsset("templates/{{ .Name}}/{{ .Name}}_new.html")
+	show = tassets.GetAsset("templates/{{ .Name}}/{{ .Name}}_show.html")
+	create = tassets.GetAsset("templates/{{ .Name}}/{{ .Name}}_create.html")
+	update = tassets.GetAsset("templates/{{ .Name}}/{{ .Name}}_update.html")
+	delete = tassets.GetAsset("templates/{{ .Name}}/{{ .Name}}_delete.html")
+
 	init_continue()
 }
 `
