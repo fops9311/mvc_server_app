@@ -43,25 +43,25 @@ func (er *Echo_server) AddAction(Act resource.ActionPath) (err error) {
 			res, _ := Act.Action(makeParams(c))
 			return c.HTML(http.StatusOK, res)
 		})
-		fmt.Printf("Path %s added\n", Act.Path)
+		fmt.Printf("Path GET %s added\n", Act.Path)
 	case "POST":
 		er.e.POST(Act.Path, func(c echo.Context) error {
 			res, _ := Act.Action(makeParams(c))
 			return c.HTML(http.StatusOK, res)
 		})
-		fmt.Printf("Path %s added\n", Act.Path)
+		fmt.Printf("Path POST %s added\n", Act.Path)
 	case "PUT":
 		er.e.PUT(Act.Path, func(c echo.Context) error {
 			res, _ := Act.Action(makeParams(c))
 			return c.HTML(http.StatusOK, res)
 		})
-		fmt.Printf("Path %s added\n", Act.Path)
+		fmt.Printf("Path PUT %s added\n", Act.Path)
 	case "DELETE":
 		er.e.DELETE(Act.Path, func(c echo.Context) error {
 			res, _ := Act.Action(makeParams(c))
 			return c.HTML(http.StatusOK, res)
 		})
-		fmt.Printf("Path %s added\n", Act.Path)
+		fmt.Printf("Path DELETE %s added\n", Act.Path)
 	}
 	return nil
 }
