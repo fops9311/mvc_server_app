@@ -22,17 +22,18 @@ func main() {
 			continue
 		}
 		fmt.Printf("%d gen resource %s\n", i, name)
-		genFile(workdir+string(os.PathSeparator)+"controllers", name, "controller", controllerTemplate, makeTemplateFile)
-		genFile(workdir+string(os.PathSeparator)+"views", name, "view", viewTemplate, makeTemplateFile)
+		genFile(workdir+string(os.PathSeparator)+"controllers", name, [2]string{"controller", ".go"}, controllerTemplate, makeTemplateFile)
+		genFile(workdir+string(os.PathSeparator)+"views", name, [2]string{"view", ".go"}, viewTemplate, makeTemplateFile)
+		genFile(workdir+string(os.PathSeparator)+"templates", name, [2]string{"template", ".html"}, "", makeEmptyFile)
 	}
 }
-func genFile(dir string, name string, suff string, template string, maker func(name string, filecontents string, texttemplate string, w io.Writer) (err error)) {
-	var path = fmt.Sprintf("%s%s%s_%s", dir, string(os.PathSeparator), name, suff)
+func genFile(dir string, name string, suff [2]string, template string, maker func(name string, filecontents string, texttemplate string, w io.Writer) (err error)) {
+	var path = fmt.Sprintf("%s%s%s_%s", dir, string(os.PathSeparator), name, suff[0])
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		os.Mkdir(path, 0775)
 		fmt.Printf("making dir %s\n", path)
 	}
-	path = fmt.Sprint(dir, string(os.PathSeparator), name, "_", suff, string(os.PathSeparator), name, "_", suff, ".go")
+	path = fmt.Sprint(dir, string(os.PathSeparator), name, "_", suff[0], string(os.PathSeparator), name, "_", suff[0], suff[1])
 	var filecontents string
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		filecontents = ""
@@ -186,6 +187,10 @@ func Init(){
 }
 `
 
+func makeEmptyFile(name string, filecontents string, texttemplate string, w io.Writer) (err error) {
+	_, err = w.Write([]byte(filecontents))
+	return err
+}
 func makeTemplateFile(name string, filecontents string, texttemplate string, w io.Writer) (err error) {
 	data := struct {
 		Name   string
