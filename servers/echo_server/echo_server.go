@@ -29,6 +29,10 @@ func (er *Echo_server) NewServer() server.Server {
 	er.e.Pre(middleware.Rewrite(map[string]string{
 		"/": "/v1/home/index",
 	}))
+	er.e.Static("/assets", "assets")
+	er.e.File("/favicon.ico", "images/favicon.ico")
+	er.e.File("/favicon_XL.ico", "images/favicon_XL.ico")
+	er.e.File("/favicon_L.ico", "images/favicon_L.ico")
 	return er
 }
 func (er *Echo_server) AddAction(Act resource.ActionPath) (err error) {
