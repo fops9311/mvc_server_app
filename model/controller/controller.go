@@ -1,3 +1,3 @@
 package controller
 
-type Action func(params map[string]string) (result string, err error)
+type Action func(params map[string]interface{}) (result string, err error)

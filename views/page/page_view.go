@@ -1,20 +1,18 @@
 package page_view
-
 //import
 import (
-	"bytes"
 	"fmt"
 	"io"
 	"text/template"
 
 	"github.com/fops9311/mvc_server_app/tassets"
 	layout "github.com/fops9311/mvc_server_app/views/layout"
-) //import
-func Dummy() {
+)  //import
+func Dummy(){
 	fmt.Print("hi")
 }
 
-func renderTemplate(params map[string]string, w io.Writer, templ string, templateName string) (err error) {
+func renderTemplate(params map[string]interface{}, w io.Writer, templ string, templateName string) (err error) {
 	tmpl, err := template.New(templateName).Parse(templ)
 	if err != nil {
 		return err
@@ -26,31 +24,32 @@ func renderTemplate(params map[string]string, w io.Writer, templ string, templat
 	return nil
 }
 
-var Index func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error) {
+
+var Index func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, index, "page_Index")
 }
 
-var Edit func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error) {
+var Edit func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, edit, "page_Edit")
 }
 
-var New func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error) {
+var New func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, new, "page_New")
 }
 
-var Show func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error) {
+var Show func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, show, "page_Show")
 }
 
-var Create func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error) {
+var Create func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, create, "page_Create")
 }
 
-var Update func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error) {
+var Update func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, update, "page_Update")
 }
 
-var Delete func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error) {
+var Delete func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, delete, "page_Delete")
 }
 
@@ -62,7 +61,8 @@ var create string
 var update string
 var delete string
 
-func Init() {
+
+func Init(){
 	tassets.InitDir("./templates")
 	index = tassets.GetAsset("templates/page/page_index.html")
 	edit = tassets.GetAsset("templates/page/page_edit.html")
@@ -78,15 +78,5 @@ func Init() {
 //DO NOT CHANGE ABOVE --GENERATED--
 
 func init_continue() {
-
-	Edit = func(params map[string]string, w io.Writer) (err error) {
-		buf := bytes.NewBufferString("")
-		renderTemplate(params, buf, edit, "page_Edit")
-		b, err := io.ReadAll(buf)
-		if err != nil {
-			return err
-		}
-		_, err = w.Write([]byte(layout.Layout(string(b))))
-		return err
-	}
+	edit = layout.Layout(edit)
 }

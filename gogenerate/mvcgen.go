@@ -73,37 +73,37 @@ import (
 ){{ end }}//import
 var Resource resource.Resurce
 
-var Index controller.Action = func(params map[string]string) (result string, err error) {
+var Index controller.Action = func(params map[string]interface{}) (result string, err error) {
 	buf := bytes.NewBuffer([]byte{})
 	err = view.Index(params, buf)
 	return buf.String(), err
 }
-var Edit controller.Action = func(params map[string]string) (result string, err error) {
+var Edit controller.Action = func(params map[string]interface{}) (result string, err error) {
 	buf := bytes.NewBuffer([]byte{})
 	err = view.Edit(params, buf)
 	return buf.String(), err
 }
-var New controller.Action = func(params map[string]string) (result string, err error) {
+var New controller.Action = func(params map[string]interface{}) (result string, err error) {
 	buf := bytes.NewBuffer([]byte{})
 	err = view.New(params, buf)
 	return buf.String(), err
 }
-var Show controller.Action = func(params map[string]string) (result string, err error) {
+var Show controller.Action = func(params map[string]interface{}) (result string, err error) {
 	buf := bytes.NewBuffer([]byte{})
 	err = view.Show(params, buf)
 	return buf.String(), err
 }
-var Create controller.Action = func(params map[string]string) (result string, err error) {
+var Create controller.Action = func(params map[string]interface{}) (result string, err error) {
 	buf := bytes.NewBuffer([]byte{})
 	err = view.Create(params, buf)
 	return buf.String(), err
 }
-var Update controller.Action = func(params map[string]string) (result string, err error) {
+var Update controller.Action = func(params map[string]interface{}) (result string, err error) {
 	buf := bytes.NewBuffer([]byte{})
 	err = view.Update(params, buf)
 	return buf.String(), err
 }
-var Delete controller.Action = func(params map[string]string) (result string, err error) {
+var Delete controller.Action = func(params map[string]interface{}) (result string, err error) {
 	buf := bytes.NewBuffer([]byte{})
 	err = view.Delete(params, buf)
 	return buf.String(), err
@@ -173,7 +173,7 @@ func Dummy(){
 	fmt.Print("hi")
 }
 
-func renderTemplate(params map[string]string, w io.Writer, templ string, templateName string) (err error) {
+func renderTemplate(params map[string]interface{}, w io.Writer, templ string, templateName string) (err error) {
 	tmpl, err := template.New(templateName).Parse(templ)
 	if err != nil {
 		return err
@@ -186,31 +186,31 @@ func renderTemplate(params map[string]string, w io.Writer, templ string, templat
 }
 
 
-var Index func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error){
+var Index func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, index, "{{.Name}}_Index")
 }
 
-var Edit func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error){
+var Edit func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, edit, "{{.Name}}_Edit")
 }
 
-var New func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error){
+var New func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, new, "{{.Name}}_New")
 }
 
-var Show func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error){
+var Show func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, show, "{{.Name}}_Show")
 }
 
-var Create func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error){
+var Create func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, create, "{{.Name}}_Create")
 }
 
-var Update func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error){
+var Update func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, update, "{{.Name}}_Update")
 }
 
-var Delete func(params map[string]string, w io.Writer) (err error) = func(params map[string]string, w io.Writer) (err error){
+var Delete func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, delete, "{{.Name}}_Delete")
 }
 

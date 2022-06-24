@@ -10,8 +10,8 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func makeParams(c echo.Context) (params map[string]string) {
-	params = make(map[string]string)
+func makeParams(c echo.Context) (params map[string]interface{}) {
+	params = make(map[string]interface{})
 	for _, p := range c.ParamNames() {
 		params[p] = c.Param(p)
 		//fmt.Printf("key=%s value=%s", p, c.Param(p))
