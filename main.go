@@ -14,7 +14,7 @@ var r server.Server = &echo_server.Echo_server{}
 func main() {
 	r = r.NewServer()
 	root := resource.NewResource()
-	root.Key = "/v1"
+	root.Key = "/:version"
 	pages := page.Resource
 	pages.Key = "/pages"
 	root.Children["pages"] = pages
