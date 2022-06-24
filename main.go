@@ -12,6 +12,7 @@ import (
 var r server.Server = &echo_server.Echo_server{}
 
 func main() {
+
 	r = r.NewServer()
 	root := resource.NewResource()
 	root.Key = "/:version"
