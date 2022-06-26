@@ -12,6 +12,15 @@ import (
 
 func makeParams(c echo.Context) (params map[string]interface{}) {
 	params = make(map[string]interface{})
+	for k, p := range c.QueryParams() {
+		params[k] = p
+	}
+	form, err := c.FormParams()
+	if err == nil {
+		for k, p := range form {
+			params[k] = p
+		}
+	}
 	for _, p := range c.ParamNames() {
 		params[p] = c.Param(p)
 		//fmt.Printf("key=%s value=%s", p, c.Param(p))
@@ -29,6 +38,7 @@ func (er *Echo_server) NewServer() server.Server {
 	er.e.Pre(middleware.Rewrite(map[string]string{
 		"/": "/v1/home/index",
 	}))
+
 	er.e.Static("/assets", "assets")
 	er.e.File("/favicon.ico", "images/favicon.ico")
 	er.e.File("/favicon_XL.ico", "images/favicon_XL.ico")
@@ -47,7 +57,7 @@ func (er *Echo_server) AddAction(Act resource.ActionPath) (err error) {
 	case "POST":
 		er.e.POST(Act.Path, func(c echo.Context) error {
 			res, _ := Act.Action(makeParams(c))
-			return c.HTML(http.StatusOK, res)
+			return c.HTML(http.StatusCreated, res)
 		})
 		fmt.Printf("Path POST %s added\n", Act.Path)
 	case "PUT":

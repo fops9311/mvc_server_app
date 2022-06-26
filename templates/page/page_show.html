@@ -4,13 +4,13 @@
   <div class="hero-body has-text-centered">
     <div class="container">
     <div class="columns is-centered">
-    <form class="panel">
+    <form class="panel" action="/v1/users" method="POST">
         <p class="panel-heading">
             Login form
         </p>
         <div class="panel-block">
             <p class="control has-icons-left">
-                <input class="input" type="email" placeholder="e.g. alex@example.com">
+                <input class="input" type="email" placeholder="e.g. alex@example.com" name="login">
               <span class="icon is-left">
                 <i class="block" aria-hidden="true">L:</i>
               </span>
@@ -18,7 +18,7 @@
         </div>
         <div class="panel-block">
             <p class="control has-icons-left">
-                <input class="input" type="password" placeholder=" ********">
+                <input class="input" type="password" placeholder=" ********" name="password">
               <span class="icon is-left">
                 <i class="" aria-hidden="true">P:</i>
               </span>
