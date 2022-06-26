@@ -1,8 +1,89 @@
 {{/* Login page */}}
 {{if eq .page_id "login"}}
-login
+<section class="hero is-fullheight">
+  <div class="hero-body has-text-centered">
+    <div class="container">
+    <div class="columns is-centered">
+    <form class="panel">
+        <p class="panel-heading">
+            Login form
+        </p>
+        <div class="panel-block">
+            <p class="control has-icons-left">
+                <input class="input" type="email" placeholder="e.g. alex@example.com">
+              <span class="icon is-left">
+                <i class="block" aria-hidden="true">L:</i>
+              </span>
+            </p>
+        </div>
+        <div class="panel-block">
+            <p class="control has-icons-left">
+                <input class="input" type="password" placeholder=" ********">
+              <span class="icon is-left">
+                <i class="" aria-hidden="true">P:</i>
+              </span>
+            </p>
+        </div>
+        <div class="panel-block">
+            <button class="button is-primary is-fullwidth">Sign in</button>
+        </div>
+        <div class="panel-block">
+            <a class="button is-fullwidth" href="/{{ .version}}/pages/register">Register</a>
+        </div>
+        <div class="panel-block">
+            <button class="button is-link is-outlined is-fullwidth">Login with GOOGLE</button>
+        </div>
+    </form>
+    </div>
+    </div>
+    </div>
+</section>
 {{else if eq .page_id "index"}}
 index
+{{else if eq .page_id "register"}}
+<section class="hero is-fullheight">
+  <div class="hero-body has-text-centered">
+    <div class="container">
+    <div class="columns is-centered">
+    <form class="panel">
+        <p class="panel-heading">
+            Register user form
+        </p>
+        <div class="panel-block">
+            <p class="control has-icons-left">
+                <input class="input" type="email" placeholder="e.g. alex@example.com">
+              <span class="icon is-left">
+                <i class="block" aria-hidden="true">L:</i>
+              </span>
+            </p>
+        </div>
+        <div class="panel-block">
+            <p class="control has-icons-left">
+                <input class="input" type="password" placeholder=" ********">
+              <span class="icon is-left">
+                <i class="" aria-hidden="true">P:</i>
+              </span>
+            </p>
+        </div>
+        <div class="panel-block">
+            <p class="control has-icons-left">
+                <input class="input" type="password" placeholder=" ********">
+              <span class="icon is-left">
+                <i class="" aria-hidden="true">P R:</i>
+              </span>
+            </p>
+        </div>
+        <div class="panel-block">
+            <button class="button is-primary is-fullwidth">Register</button>
+        </div>
+        <div class="panel-block">
+            <a class="button is-fullwidth" href="/{{ .version}}/pages/login">Login</a>
+        </div>
+    </form>
+    </div>
+    </div>
+    </div>
+</section>
 {{else}}
 Sorry. Page not found.
 {{end}}
