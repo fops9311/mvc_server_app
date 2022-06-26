@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 )
 
@@ -16,11 +17,10 @@ func init() {
 
 }
 func InitDir(dir string) {
-	if init_flag {
-		return
+	if !init_flag {
+		init_flag = true
+		templates = map[string]string{}
 	}
-	init_flag = true
-	templates = map[string]string{}
 	traverceDir(dir)
 
 }
@@ -38,7 +38,8 @@ func traverceDir(dir string) {
 			fmt.Println(path, info.Size())
 			if !info.IsDir() {
 				b, _ := os.ReadFile(path)
-				templates[path] = (string(b))
+				s := strings.Replace(string(b), string(os.PathSeparator), "/", -1)
+				templates[path] = (s)
 			}
 			return nil
 		})
