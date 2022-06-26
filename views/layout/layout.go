@@ -20,11 +20,15 @@ func Layout(layout string, inner_contents ...string) (res string) {
 	res = layout
 	for i, s := range inner_contents {
 		old := fmt.Sprintf(format, i+1)
-		res = strings.ReplaceAll(res, old, s)
+		if strings.Contains(res, old) {
+			res = strings.ReplaceAll(res, old, s)
+		}
 	}
 	for _, s := range tassets.GetKeys() {
 		old := fmt.Sprintf(format1, s)
-		res = strings.ReplaceAll(res, old, tassets.GetAsset(s))
+		if strings.Contains(res, old) {
+			res = strings.ReplaceAll(res, old, Layout(tassets.GetAsset(s)))
+		}
 	}
 	return res
 }
