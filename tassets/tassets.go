@@ -29,6 +29,13 @@ func GetAsset(name string) (templ string) {
 	defer m.Unlock()
 	return templates[name]
 }
+func GetKeys() []string {
+	s := make([]string, 0)
+	for i := range templates {
+		s = append(s, i)
+	}
+	return s
+}
 func traverceDir(dir string) {
 	_ = filepath.Walk(dir,
 		func(path string, info os.FileInfo, err error) error {
