@@ -113,6 +113,7 @@ func init_begin() {
 
 }
 func init_continue() {
+	view.Init()
 	delete(Resource.Actions, "Delete")
 	delete(Resource.Actions, "Update")
 	delete(Resource.Actions, "PUT")
