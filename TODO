@@ -5,3 +5,4 @@
 5. template folder
 6. tassets_test 
 7. layout.AssetLayout
+8. invert dependancy from controller to view

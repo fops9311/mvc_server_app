@@ -3,10 +3,14 @@ package user_controller
 //import
 import (
 	"bytes"
-	"fmt"
+	"math/rand"
+	"os"
+	"time"
 
+	"github.com/fops9311/mvc_server_app/app"
 	"github.com/fops9311/mvc_server_app/model/controller"
 	"github.com/fops9311/mvc_server_app/model/resource"
+	"github.com/fops9311/mvc_server_app/utils/emailer"
 	view "github.com/fops9311/mvc_server_app/views/user"
 ) //import
 var Resource resource.Resurce
@@ -102,15 +106,105 @@ func init() {
 //!!define init_continue func(){}
 //DO NOT CHANGE ABOVE --GENERATED--
 func init_begin() {
-	CreateClosure := Create
 	Create = func(params map[string]interface{}) (result string, err error) {
-		params["result"] = "success"
-		fmt.Println("Creating new user")
-		return CreateClosure(params)
-	}
+		var email string = ""
+		var password string = ""
+		responce := bytes.NewBuffer([]byte{})
+		emailpayload := bytes.NewBuffer([]byte{})
+		switch v := params["email"].(type) {
+		case []string:
+			if len(v) < 1 {
+				err = view.RegisterError(params, responce)
+				return responce.String(), err
+			}
+			email = v[0]
+		default:
+			err = view.RegisterError(params, responce)
+			return responce.String(), err
+		}
 
+		params["email_confirm_route"] = os.Getenv("EMAIL_CONFIRM_ROUTE") //"http://localhost:8000/v1/users"
+		params["user_id"] = email
+		switch v := params["password"].(type) {
+		case []string:
+			if len(v) < 1 {
+				err = view.RegisterError(params, responce)
+				return responce.String(), err
+			}
+			password = v[0]
+		default:
+			err = view.RegisterError(params, responce)
+			return responce.String(), err
+		}
+
+		var email_confirm_param = RandStringRunes(60)
+		params["email_confirm_param"] = email_confirm_param
+		err = app.Users.NewUser(app.User{
+			Id:                email,
+			Email:             email,
+			Password:          password,
+			EmailConfirmed:    false,
+			EmailConfirmParam: email_confirm_param,
+		})
+		if err != nil {
+			err = view.InternalServerError(params, responce)
+			return responce.String(), err
+		}
+		err = view.RegisterEmailPayload(params, emailpayload)
+		if err != nil {
+			err = view.InternalServerError(params, responce)
+			return responce.String(), err
+		}
+		err = emailer.Send([]string{email}, "Registration", emailpayload.String())
+		if err != nil {
+			err = view.RegisterSendError(params, responce)
+			return responce.String(), err
+		}
+
+		err = view.RegisterNeedConfirm(params, responce)
+		return responce.String(), err
+	}
 }
+
+var EmailConfirm controller.Action = func(params map[string]interface{}) (result string, err error) {
+	var user_id string
+	var email_confirm_param string
+	switch v := params["user_id"].(type) {
+	case string:
+		user_id = v
+	default:
+		return "NOT confirmed", err
+	}
+	switch v := params["email_confirm_param"].(type) {
+	case string:
+		email_confirm_param = v
+	default:
+		return "NOT confirmed", err
+	}
+	err = app.Users.ConfirmEmail(user_id, email_confirm_param)
+	if err != nil {
+		return "NOT confirmed", err
+	}
+	return "Confirmed", err
+}
+
 func init_continue() {
 	view.Init()
+	Resource.Actions["EmailConfirm"] = resource.ActionPath{
+		Verb:       "GET",
+		Path:       "/:user_id/:email_confirm_param",
+		Middleware: make([]string, 0),
+		Action:     EmailConfirm,
+	}
+}
 
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func RandStringRunes(n int) string {
+	rand.Seed(time.Now().UnixNano())
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return string(b)
 }

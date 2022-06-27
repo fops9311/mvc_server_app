@@ -77,10 +77,57 @@ func Init() {
 //DO NOT CHANGE ABOVE --GENERATED--
 
 func init_continue() {
+
 	create = layout.Layout(
 		tassets.GetAsset("templates/page_layout/masterpage.html"),
 
 		tassets.GetAsset("templates/user/user_create.html"),
 	)
+	new = layout.Layout(
+		tassets.GetAsset("templates/page_layout/masterpage.html"),
 
+		tassets.GetAsset("templates/user/user_new.html"),
+	)
+
+}
+
+var RegisterError func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+	return renderTemplate(
+		params,
+		w,
+		tassets.GetAsset("templates/user/RegisterError.html"),
+		"user_RegisterError",
+	)
+}
+var RegisterEmailPayload func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+	return renderTemplate(
+		params,
+		w,
+		tassets.GetAsset("templates/user/RegisterEmailPayload.html"),
+		"user_RegisterEmailPayload",
+	)
+}
+var InternalServerError func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+	return renderTemplate(
+		params,
+		w,
+		tassets.GetAsset("templates/user/InternalServerError.html"),
+		"user_InternalServerError",
+	)
+}
+var RegisterSendError func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+	return renderTemplate(
+		params,
+		w,
+		tassets.GetAsset("templates/user/RegisterSendError.html"),
+		"user_RegisterSendError",
+	)
+}
+var RegisterNeedConfirm func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+	return renderTemplate(
+		params,
+		w,
+		tassets.GetAsset("templates/user/RegisterNeedConfirm.html"),
+		"user_RegisterNeedConfirm",
+	)
 }

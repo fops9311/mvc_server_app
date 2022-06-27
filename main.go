@@ -3,17 +3,27 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	page "github.com/fops9311/mvc_server_app/controllers/page"
 	user "github.com/fops9311/mvc_server_app/controllers/user"
+	localusers "github.com/fops9311/mvc_server_app/database/LocalUsers"
 	"github.com/fops9311/mvc_server_app/model/resource"
 	"github.com/fops9311/mvc_server_app/model/server"
 	"github.com/fops9311/mvc_server_app/servers/echo_server"
+	"github.com/joho/godotenv"
 )
 
 var r server.Server = &echo_server.Echo_server{}
 
+func init() {
+	godotenv.Load()
+	fmt.Println(os.Getenv("EMAIL_LOGIN"))
+	fmt.Println(os.Getenv("EMAIL_PASS"))
+	localusers.DefineComponent()
+}
 func main() {
-
 	r = r.NewServer()
 	root := resource.NewResource()
 	root.Key = "/:version"
