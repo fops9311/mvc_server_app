@@ -10,12 +10,12 @@ type ActionPath struct {
 }
 type Resurce struct {
 	Key      string
-	Actions  map[string]ActionPath
+	Actions  map[string]*ActionPath
 	Children map[string]Resurce
 }
 
 func NewResource() (r Resurce) {
-	r.Actions = make(map[string]ActionPath, 0)
+	r.Actions = make(map[string]*ActionPath, 0)
 	r.Children = make(map[string]Resurce, 0)
 	return r
 }

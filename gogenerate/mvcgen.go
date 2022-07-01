@@ -114,43 +114,43 @@ func init() {
 	init_begin()
 	Resource = resource.NewResource()
 	Resource.Key = "/{{.Name}}"
-	Resource.Actions["Index"] = resource.ActionPath{ 	
+	Resource.Actions["Index"] = &resource.ActionPath{ 	
 		Verb:       "GET",
 		Path:       "",
 		Middleware: make([]string, 0),
 		Action:     Index,
 	}
-	Resource.Actions["Edit"] = resource.ActionPath{ 	
+	Resource.Actions["Edit"] = &resource.ActionPath{ 	
 		Verb:       "GET",
 		Path:       "/:{{.Name}}_id/edit",
 		Middleware: make([]string, 0),
 		Action:     Edit,
 	}
-	Resource.Actions["New"] = resource.ActionPath{ 	
+	Resource.Actions["New"] = &resource.ActionPath{ 	
 		Verb:       "GET",
 		Path:       "/new",
 		Middleware: make([]string, 0),
 		Action:     New,
 	}
-	Resource.Actions["Show"] = resource.ActionPath{ 	
+	Resource.Actions["Show"] = &resource.ActionPath{ 	
 		Verb:       "GET",
 		Path:       "/:{{.Name}}_id",
 		Middleware: make([]string, 0),
 		Action:     Show,
 	}
-	Resource.Actions["Create"] = resource.ActionPath{ 	
+	Resource.Actions["Create"] = &resource.ActionPath{ 	
 		Verb:       "POST",
 		Path:       "",
 		Middleware: make([]string, 0),
 		Action:     Create,
 	}
-	Resource.Actions["Update"] = resource.ActionPath{ 	
+	Resource.Actions["Update"] = &resource.ActionPath{ 	
 		Verb:       "PUT",
 		Path:       "/:{{.Name}}_id",
 		Middleware: make([]string, 0),
 		Action:     Update,
 	}
-	Resource.Actions["Delete"] = resource.ActionPath{ 	
+	Resource.Actions["Delete"] = &resource.ActionPath{ 	
 		Verb:       "DELETE",
 		Path:       "/:{{.Name}}_id",
 		Middleware: make([]string, 0),

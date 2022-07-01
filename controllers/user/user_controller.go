@@ -1,5 +1,4 @@
 package user_controller
-
 //import
 import (
 	"bytes"
@@ -12,7 +11,7 @@ import (
 	"github.com/fops9311/mvc_server_app/model/resource"
 	"github.com/fops9311/mvc_server_app/utils/emailer"
 	view "github.com/fops9311/mvc_server_app/views/user"
-) //import
+)  //import
 var Resource resource.Resurce
 
 var Index controller.Action = func(params map[string]interface{}) (result string, err error) {
@@ -56,43 +55,43 @@ func init() {
 	init_begin()
 	Resource = resource.NewResource()
 	Resource.Key = "/user"
-	Resource.Actions["Index"] = resource.ActionPath{
+	Resource.Actions["Index"] = &resource.ActionPath{ 	
 		Verb:       "GET",
 		Path:       "",
 		Middleware: make([]string, 0),
 		Action:     Index,
 	}
-	Resource.Actions["Edit"] = resource.ActionPath{
+	Resource.Actions["Edit"] = &resource.ActionPath{ 	
 		Verb:       "GET",
 		Path:       "/:user_id/edit",
 		Middleware: make([]string, 0),
 		Action:     Edit,
 	}
-	Resource.Actions["New"] = resource.ActionPath{
+	Resource.Actions["New"] = &resource.ActionPath{ 	
 		Verb:       "GET",
 		Path:       "/new",
 		Middleware: make([]string, 0),
 		Action:     New,
 	}
-	Resource.Actions["Show"] = resource.ActionPath{
+	Resource.Actions["Show"] = &resource.ActionPath{ 	
 		Verb:       "GET",
 		Path:       "/:user_id",
 		Middleware: make([]string, 0),
 		Action:     Show,
 	}
-	Resource.Actions["Create"] = resource.ActionPath{
+	Resource.Actions["Create"] = &resource.ActionPath{ 	
 		Verb:       "POST",
 		Path:       "",
 		Middleware: make([]string, 0),
 		Action:     Create,
 	}
-	Resource.Actions["Update"] = resource.ActionPath{
+	Resource.Actions["Update"] = &resource.ActionPath{ 	
 		Verb:       "PUT",
 		Path:       "/:user_id",
 		Middleware: make([]string, 0),
 		Action:     Update,
 	}
-	Resource.Actions["Delete"] = resource.ActionPath{
+	Resource.Actions["Delete"] = &resource.ActionPath{ 	
 		Verb:       "DELETE",
 		Path:       "/:user_id",
 		Middleware: make([]string, 0),
@@ -190,12 +189,13 @@ var EmailConfirm controller.Action = func(params map[string]interface{}) (result
 
 func init_continue() {
 	view.Init()
-	Resource.Actions["EmailConfirm"] = resource.ActionPath{
+	Resource.Actions["EmailConfirm"] = &resource.ActionPath{
 		Verb:       "GET",
 		Path:       "/:user_id/:email_confirm_param",
 		Middleware: make([]string, 0),
 		Action:     EmailConfirm,
 	}
+	Resource.Actions["Edit"].Middleware = append(Resource.Actions["Edit"].Middleware, "BasicUserAuth")
 }
 
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
