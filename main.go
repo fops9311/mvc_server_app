@@ -34,7 +34,7 @@ func main() {
 	users := user.Resource
 	users.Key = "/users"
 	root.Children["users"] = users
-	r.AddResurce(root, "")
+	r.AddResurce(&root, "")
 	r.Serve("8000")
 
 }

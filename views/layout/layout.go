@@ -9,6 +9,7 @@ import (
 
 const format string = "<inner_content_%d/>"
 const format1 string = "<inner_content_%s/>"
+const format2 string = "//inner_content_%s"
 
 func init() {
 	tassets.InitDir("./templates")
@@ -26,6 +27,12 @@ func Layout(layout string, inner_contents ...string) (res string) {
 	}
 	for _, s := range tassets.GetKeys() {
 		old := fmt.Sprintf(format1, s)
+		if strings.Contains(res, old) {
+			res = strings.ReplaceAll(res, old, Layout(tassets.GetAsset(s)))
+		}
+	}
+	for _, s := range tassets.GetKeys() {
+		old := fmt.Sprintf(format2, s)
 		if strings.Contains(res, old) {
 			res = strings.ReplaceAll(res, old, Layout(tassets.GetAsset(s)))
 		}

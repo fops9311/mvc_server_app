@@ -3,6 +3,8 @@ package app
 import (
 	"errors"
 	"time"
+
+	"github.com/golang-jwt/jwt"
 )
 
 var ErrUserNotExist error = errors.New("UserNotExist")
@@ -15,6 +17,8 @@ var Users = struct {
 	NewUser        func(user User) (err error)
 	ConfirmEmail   func(user_id, confirm_email_param string) (err error)
 	Authentication func(login string, password string) bool
+	GetJWT         func(login string, password string) (string, error)
+	VerifyJWT      func(*jwt.Token) bool
 }{
 	GetUser: func(user_id string) (user User, err error) {
 		return User{}, ErrUserComponentNotDefined
@@ -26,6 +30,13 @@ var Users = struct {
 		return ErrUserComponentNotDefined
 	},
 	Authentication: func(login, password string) bool { return false },
+
+	GetJWT: func(login string, password string) (string, error) {
+		return "{}", nil
+	},
+	VerifyJWT: func(*jwt.Token) bool {
+		return false
+	},
 }
 
 type User struct {
@@ -34,6 +45,7 @@ type User struct {
 	Password          string
 	EmailConfirmed    bool
 	EmailConfirmParam string
+	BasicAuthLogout   bool
 }
 
 var ObjectNotExist error
@@ -62,4 +74,8 @@ type Object struct {
 type Sample struct {
 	Timestamp time.Time
 	Value     float32
+}
+
+var BasicAuthUserValidator func(login, pass string) (bool, error) = func(login, pass string) (bool, error) {
+	return Users.Authentication(login, pass), nil
 }
