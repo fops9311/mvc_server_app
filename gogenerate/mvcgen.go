@@ -69,6 +69,7 @@ var controllerTemplate string = `package {{.Name}}_controller
 import (
 	"github.com/fops9311/mvc_server_app/model/controller"
 	"github.com/fops9311/mvc_server_app/model/resource"
+	"github.com/fops9311/mvc_server_app/model/server"
 	view "github.com/fops9311/mvc_server_app/views/{{.Name}}"
 ){{ end }}//import
 var Resource resource.Resurce
@@ -109,11 +110,11 @@ var Delete controller.Action = func(params map[string]interface{}) (result strin
 	return buf.String(), err
 }
 
-func init() {
+func Init() {
 	view.Init()
 	init_begin()
 	Resource = resource.NewResource()
-	Resource.Key = "/{{.Name}}"
+	Resource.Key = "/{{.Name}}s"
 	Resource.Actions["Index"] = &resource.ActionPath{ 	
 		Verb:       "GET",
 		Path:       "",
@@ -122,7 +123,7 @@ func init() {
 	}
 	Resource.Actions["Edit"] = &resource.ActionPath{ 	
 		Verb:       "GET",
-		Path:       "/:{{.Name}}_id/edit",
+		Path:       "/"+server.URIParam("{{.Name}}_id")+"/edit",
 		Middleware: make([]string, 0),
 		Action:     Edit,
 	}
@@ -134,7 +135,7 @@ func init() {
 	}
 	Resource.Actions["Show"] = &resource.ActionPath{ 	
 		Verb:       "GET",
-		Path:       "/:{{.Name}}_id",
+		Path:       "/"+server.URIParam("{{.Name}}_id"),
 		Middleware: make([]string, 0),
 		Action:     Show,
 	}
@@ -146,13 +147,13 @@ func init() {
 	}
 	Resource.Actions["Update"] = &resource.ActionPath{ 	
 		Verb:       "PUT",
-		Path:       "/:{{.Name}}_id",
+		Path:       "/"+server.URIParam("{{.Name}}_id"),
 		Middleware: make([]string, 0),
 		Action:     Update,
 	}
 	Resource.Actions["Delete"] = &resource.ActionPath{ 	
 		Verb:       "DELETE",
-		Path:       "/:{{.Name}}_id",
+		Path:       "/"+server.URIParam("{{.Name}}_id"),
 		Middleware: make([]string, 0),
 		Action:     Delete,
 	}
@@ -173,12 +174,16 @@ func Dummy(){
 	fmt.Print("hi")
 }
 
+var tmap map[string]*template.Template = make(map[string]*template.Template)
+
 func renderTemplate(params map[string]interface{}, w io.Writer, templ string, templateName string) (err error) {
-	tmpl, err := template.New(templateName).Parse(templ)
-	if err != nil {
-		return err
+	if _, ok := tmap[templateName]; !ok {
+		tmap[templateName], err = template.New(templateName).Parse(templ)
+		if err != nil {
+			return err
+		}
 	}
-	err = tmpl.Execute(w, params)
+	err = tmap[templateName].Execute(w, params)
 	if err != nil {
 		return err
 	}
