@@ -1,6 +1,6 @@
 //go:generate echo "creating some files, based on resource spec"
 //go:generate go run ./gogenerate/mvcgen.go page user assets
-//go:generate go run ./gogenerate/uicomponents/uicomponents.go navbar menu
+//go:generate go run ./gogenerate/uicomponents/uicomponents.go navbar menu layout_fullwh_cent signin_panel signup_panel message_panel object_panel
 package main
 
 import (

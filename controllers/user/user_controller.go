@@ -12,7 +12,7 @@ import (
 	"github.com/fops9311/mvc_server_app/model/server"
 	"github.com/fops9311/mvc_server_app/utils/emailer"
 	view "github.com/fops9311/mvc_server_app/views/user"
-)                   //import
+)                      //import
 var Resource resource.Resurce
 
 var Index controller.Action = func(params map[string]interface{}) (result string, err error) {

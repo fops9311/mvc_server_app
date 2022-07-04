@@ -1,0 +1,30 @@
+<script>
+//inner_content_templates/components/signup_panel/index.js
+</script>
+<form class="panel" action="/v1/users" method="POST">
+    <p class="panel-heading">
+        Register user form
+    </p>
+    <div class="panel-block">
+        <p class="control has-icons-left">
+            <input class="input" type="email" placeholder="e.g. alex@example.com" name="email">
+          <span class="icon is-left">
+            <i class="block" aria-hidden="true">L:</i>
+          </span>
+        </p>
+    </div>
+    <div class="panel-block">
+        <p class="control has-icons-left">
+            <input class="input" type="password" placeholder=" ********" name="password">
+          <span class="icon is-left">
+            <i class="" aria-hidden="true">P:</i>
+          </span>
+        </p>
+    </div>
+    <div class="panel-block">
+        <button class="button is-primary is-fullwidth">Register</button>
+    </div>
+    <div class="panel-block">
+        <a class="button is-fullwidth" href="/{{ .version}}/pages/login">Login</a>
+    </div>
+</form>

@@ -1,0 +1,33 @@
+<script>
+//inner_content_templates/components/signin_panel/index.js
+</script>
+<form class="panel" action="/JWTAuth" method="POST">
+    <p class="panel-heading">
+        Login form
+    </p>
+    <div class="panel-block">
+        <p class="control has-icons-left">
+            <input class="input" type="email" placeholder="e.g. alex@example.com" name="login">
+          <span class="icon is-left">
+            <i class="block" aria-hidden="true">L:</i>
+          </span>
+        </p>
+    </div>
+    <div class="panel-block">
+        <p class="control has-icons-left">
+            <input class="input" type="password" placeholder=" ********" name="password">
+          <span class="icon is-left">
+            <i class="" aria-hidden="true">P:</i>
+          </span>
+        </p>
+    </div>
+    <div class="panel-block">
+        <button class="button is-primary is-fullwidth">Sign in</button>
+    </div>
+    <div class="panel-block">
+        <a class="button is-fullwidth" href="/{{ .version}}/users/new">Register</a>
+    </div>
+    <div class="panel-block">
+        <button class="button is-link is-outlined is-fullwidth">Login with GOOGLE</button>
+    </div>
+</form>

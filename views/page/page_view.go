@@ -1,4 +1,5 @@
 package page_view
+
 //import
 import (
 	"fmt"
@@ -7,8 +8,8 @@ import (
 
 	"github.com/fops9311/mvc_server_app/tassets"
 	layout "github.com/fops9311/mvc_server_app/views/layout"
-)                            //import
-func Dummy(){
+) //import
+func Dummy() {
 	fmt.Print("hi")
 }
 
@@ -28,32 +29,31 @@ func renderTemplate(params map[string]interface{}, w io.Writer, templ string, te
 	return nil
 }
 
-
-var Index func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
+var Index func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
 	return renderTemplate(params, w, index, "page_Index")
 }
 
-var Edit func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
+var Edit func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
 	return renderTemplate(params, w, edit, "page_Edit")
 }
 
-var New func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
+var New func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
 	return renderTemplate(params, w, new, "page_New")
 }
 
-var Show func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
+var Show func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
 	return renderTemplate(params, w, show, "page_Show")
 }
 
-var Create func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
+var Create func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
 	return renderTemplate(params, w, create, "page_Create")
 }
 
-var Update func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
+var Update func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
 	return renderTemplate(params, w, update, "page_Update")
 }
 
-var Delete func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
+var Delete func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
 	return renderTemplate(params, w, delete, "page_Delete")
 }
 
@@ -65,8 +65,7 @@ var create string
 var update string
 var delete string
 
-
-func Init(){
+func Init() {
 	tassets.InitDir("./templates")
 	index = tassets.GetAsset("templates/page/page_index.html")
 	edit = tassets.GetAsset("templates/page/page_edit.html")
@@ -87,9 +86,45 @@ func init_continue() {
 
 		tassets.GetAsset("templates/page/page_edit.html"),
 	)
-	show = layout.Layout(
+	var show_index string = layout.Layout(
 		tassets.GetAsset("templates/page_layout/masterpage.html"),
 
-		tassets.GetAsset("templates/page/page_show.html"),
+		layout.Layout(
+			tassets.GetAsset("templates/components/layout_fullwh_cent/index.html"),
+
+			tassets.GetAsset("templates/components/message_panel/index.html"),
+		),
 	)
+	var show_signin string = layout.Layout(
+		tassets.GetAsset("templates/page_layout/masterpage.html"),
+
+		layout.Layout(
+			tassets.GetAsset("templates/components/layout_fullwh_cent/index.html"),
+
+			tassets.GetAsset("templates/components/signin_panel/index.html"),
+		),
+	)
+	var show_signup string = layout.Layout(
+		tassets.GetAsset("templates/page_layout/masterpage.html"),
+
+		layout.Layout(
+			tassets.GetAsset("templates/components/layout_fullwh_cent/index.html"),
+
+			tassets.GetAsset("templates/components/signup_panel/index.html"),
+		),
+	)
+	Show = func(params map[string]interface{}, w io.Writer) (err error) {
+		switch v := params["page_id"].(type) {
+		case string:
+			switch v {
+			case "signup":
+				return renderTemplate(params, w, show_signup, "page_Show_signup")
+			case "signin":
+				return renderTemplate(params, w, show_signin, "page_Show_signin")
+			case "index":
+				return renderTemplate(params, w, show_index, "page_Show_index")
+			}
+		}
+		return renderTemplate(params, w, show_index, "page_Show_index")
+	}
 }

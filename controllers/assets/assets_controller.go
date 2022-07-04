@@ -7,7 +7,7 @@ import (
 	"github.com/fops9311/mvc_server_app/model/resource"
 	"github.com/fops9311/mvc_server_app/model/server"
 	view "github.com/fops9311/mvc_server_app/views/assets"
-)                      //import
+)                         //import
 var Resource resource.Resurce
 
 var Index controller.Action = func(params map[string]interface{}) (result string, err error) {

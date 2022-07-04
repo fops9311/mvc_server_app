@@ -6,7 +6,7 @@ import (
 	"text/template"
 
 	"github.com/fops9311/mvc_server_app/tassets"
-)                       //import
+)                          //import
 func Dummy(){
 	fmt.Print("hi")
 }
