@@ -94,6 +94,7 @@ func (er *Echo_server) AddAction(Act resource.ActionPath) (err error) {
 		er.e.GET(
 			Act.Path,
 			func(c echo.Context) error {
+				c.Response().Header().Set()
 				res, _ := Act.Action(makeParams(c))
 				return c.HTML(http.StatusOK, res)
 			},

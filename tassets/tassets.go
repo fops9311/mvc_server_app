@@ -42,11 +42,13 @@ func traverceDir(dir string) {
 			if err != nil {
 				return err
 			}
-			fmt.Println(path, info.Size())
 			if !info.IsDir() {
-				b, _ := os.ReadFile(path)
-				s := strings.Replace(string(b), string(os.PathSeparator), "/", -1)
-				templates[path] = (s)
+				if _, ok := templates[path]; !ok {
+					b, _ := os.ReadFile(path)
+					s := strings.Replace(string(b), string(os.PathSeparator), "/", -1)
+					templates[path] = (s)
+					fmt.Println(path, info.Size())
+				}
 			}
 			return nil
 		})

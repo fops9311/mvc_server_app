@@ -3,6 +3,7 @@ package localusers
 import (
 	"crypto/subtle"
 	"encoding/json"
+	"fmt"
 	"os"
 	"strings"
 	"sync"
@@ -19,6 +20,7 @@ func DefineComponent() {
 	app.Users.GetJWT = GetJWT
 }
 func init() {
+	fmt.Println("Using LocalUsers db...")
 	readUsersFile()
 }
 func readUsersFile() {

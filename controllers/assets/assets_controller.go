@@ -1,4 +1,4 @@
-package page_controller
+package assets_controller
 //import
 import (
 	"bytes"
@@ -6,7 +6,7 @@ import (
 	"github.com/fops9311/mvc_server_app/model/controller"
 	"github.com/fops9311/mvc_server_app/model/resource"
 	"github.com/fops9311/mvc_server_app/model/server"
-	view "github.com/fops9311/mvc_server_app/views/page"
+	view "github.com/fops9311/mvc_server_app/views/assets"
 )                      //import
 var Resource resource.Resurce
 
@@ -50,7 +50,7 @@ func Init() {
 	view.Init()
 	init_begin()
 	Resource = resource.NewResource()
-	Resource.Key = "/pages"
+	Resource.Key = "/assetss"
 	Resource.Actions["Index"] = &resource.ActionPath{ 	
 		Verb:       "GET",
 		Path:       "",
@@ -59,7 +59,7 @@ func Init() {
 	}
 	Resource.Actions["Edit"] = &resource.ActionPath{ 	
 		Verb:       "GET",
-		Path:       "/"+server.URIParam("page_id")+"/edit",
+		Path:       "/"+server.URIParam("assets_id")+"/edit",
 		Middleware: make([]string, 0),
 		Action:     Edit,
 	}
@@ -71,7 +71,7 @@ func Init() {
 	}
 	Resource.Actions["Show"] = &resource.ActionPath{ 	
 		Verb:       "GET",
-		Path:       "/"+server.URIParam("page_id"),
+		Path:       "/"+server.URIParam("assets_id"),
 		Middleware: make([]string, 0),
 		Action:     Show,
 	}
@@ -83,13 +83,13 @@ func Init() {
 	}
 	Resource.Actions["Update"] = &resource.ActionPath{ 	
 		Verb:       "PUT",
-		Path:       "/"+server.URIParam("page_id"),
+		Path:       "/"+server.URIParam("assets_id"),
 		Middleware: make([]string, 0),
 		Action:     Update,
 	}
 	Resource.Actions["Delete"] = &resource.ActionPath{ 	
 		Verb:       "DELETE",
-		Path:       "/"+server.URIParam("page_id"),
+		Path:       "/"+server.URIParam("assets_id"),
 		Middleware: make([]string, 0),
 		Action:     Delete,
 	}
@@ -100,24 +100,15 @@ func Init() {
 //!!define init_begin func(){}
 //!!define init_continue func(){}
 //DO NOT CHANGE ABOVE --GENERATED--
-
 func init_begin() {
-
-	Edit = func(params map[string]interface{}) (result string, err error) {
-		params["meta_title"] = "title"
-		params["badumtsss"] = "wap wapwaaaap"
-		buf := bytes.NewBuffer([]byte{})
-		err = view.Edit(params, buf)
-		return buf.String(), err
-	}
 
 }
 func init_continue() {
 	view.Init()
 	delete(Resource.Actions, "Delete")
 	delete(Resource.Actions, "Update")
-	delete(Resource.Actions, "PUT")
-	delete(Resource.Actions, "POST")
-	delete(Resource.Actions, "Edit")
+	delete(Resource.Actions, "Create")
 	delete(Resource.Actions, "New")
+	delete(Resource.Actions, "Edit")
+	delete(Resource.Actions, "Index")
 }

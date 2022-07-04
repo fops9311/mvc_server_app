@@ -1,4 +1,4 @@
-package page_view
+package assets_view
 //import
 import (
 	"fmt"
@@ -6,8 +6,7 @@ import (
 	"text/template"
 
 	"github.com/fops9311/mvc_server_app/tassets"
-	layout "github.com/fops9311/mvc_server_app/views/layout"
-)                            //import
+)                       //import
 func Dummy(){
 	fmt.Print("hi")
 }
@@ -30,31 +29,31 @@ func renderTemplate(params map[string]interface{}, w io.Writer, templ string, te
 
 
 var Index func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
-	return renderTemplate(params, w, index, "page_Index")
+	return renderTemplate(params, w, index, "assets_Index")
 }
 
 var Edit func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
-	return renderTemplate(params, w, edit, "page_Edit")
+	return renderTemplate(params, w, edit, "assets_Edit")
 }
 
 var New func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
-	return renderTemplate(params, w, new, "page_New")
+	return renderTemplate(params, w, new, "assets_New")
 }
 
 var Show func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
-	return renderTemplate(params, w, show, "page_Show")
+	return renderTemplate(params, w, show, "assets_Show")
 }
 
 var Create func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
-	return renderTemplate(params, w, create, "page_Create")
+	return renderTemplate(params, w, create, "assets_Create")
 }
 
 var Update func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
-	return renderTemplate(params, w, update, "page_Update")
+	return renderTemplate(params, w, update, "assets_Update")
 }
 
 var Delete func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
-	return renderTemplate(params, w, delete, "page_Delete")
+	return renderTemplate(params, w, delete, "assets_Delete")
 }
 
 var index string
@@ -68,13 +67,13 @@ var delete string
 
 func Init(){
 	tassets.InitDir("./templates")
-	index = tassets.GetAsset("templates/page/page_index.html")
-	edit = tassets.GetAsset("templates/page/page_edit.html")
-	new = tassets.GetAsset("templates/page/page_new.html")
-	show = tassets.GetAsset("templates/page/page_show.html")
-	create = tassets.GetAsset("templates/page/page_create.html")
-	update = tassets.GetAsset("templates/page/page_update.html")
-	delete = tassets.GetAsset("templates/page/page_delete.html")
+	index = tassets.GetAsset("templates/assets/assets_index.html")
+	edit = tassets.GetAsset("templates/assets/assets_edit.html")
+	new = tassets.GetAsset("templates/assets/assets_new.html")
+	show = tassets.GetAsset("templates/assets/assets_show.html")
+	create = tassets.GetAsset("templates/assets/assets_create.html")
+	update = tassets.GetAsset("templates/assets/assets_update.html")
+	delete = tassets.GetAsset("templates/assets/assets_delete.html")
 
 	init_continue()
 }
@@ -82,14 +81,19 @@ func Init(){
 //DO NOT CHANGE ABOVE --GENERATED--
 
 func init_continue() {
-	edit = layout.Layout(
-		tassets.GetAsset("templates/page_layout/masterpage.html"),
+	Show = func(params map[string]interface{}, w io.Writer) (err error) {
+		switch asset_id := params["assets_id"].(type) {
+		case string:
+			return renderTemplate(
+				params,
+				w,
+				tassets.GetAsset("templates/assets/"+asset_id),
+				"assets_"+asset_id,
+			)
+		default:
+			return nil
 
-		tassets.GetAsset("templates/page/page_edit.html"),
-	)
-	show = layout.Layout(
-		tassets.GetAsset("templates/page_layout/masterpage.html"),
+		}
+	}
 
-		tassets.GetAsset("templates/page/page_show.html"),
-	)
 }

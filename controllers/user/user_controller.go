@@ -9,9 +9,10 @@ import (
 	"github.com/fops9311/mvc_server_app/app"
 	"github.com/fops9311/mvc_server_app/model/controller"
 	"github.com/fops9311/mvc_server_app/model/resource"
+	"github.com/fops9311/mvc_server_app/model/server"
 	"github.com/fops9311/mvc_server_app/utils/emailer"
 	view "github.com/fops9311/mvc_server_app/views/user"
-)  //import
+)                   //import
 var Resource resource.Resurce
 
 var Index controller.Action = func(params map[string]interface{}) (result string, err error) {
@@ -50,11 +51,11 @@ var Delete controller.Action = func(params map[string]interface{}) (result strin
 	return buf.String(), err
 }
 
-func init() {
+func Init() {
 	view.Init()
 	init_begin()
 	Resource = resource.NewResource()
-	Resource.Key = "/user"
+	Resource.Key = "/users"
 	Resource.Actions["Index"] = &resource.ActionPath{ 	
 		Verb:       "GET",
 		Path:       "",
@@ -63,7 +64,7 @@ func init() {
 	}
 	Resource.Actions["Edit"] = &resource.ActionPath{ 	
 		Verb:       "GET",
-		Path:       "/:user_id/edit",
+		Path:       "/"+server.URIParam("user_id")+"/edit",
 		Middleware: make([]string, 0),
 		Action:     Edit,
 	}
@@ -75,7 +76,7 @@ func init() {
 	}
 	Resource.Actions["Show"] = &resource.ActionPath{ 	
 		Verb:       "GET",
-		Path:       "/:user_id",
+		Path:       "/"+server.URIParam("user_id"),
 		Middleware: make([]string, 0),
 		Action:     Show,
 	}
@@ -87,13 +88,13 @@ func init() {
 	}
 	Resource.Actions["Update"] = &resource.ActionPath{ 	
 		Verb:       "PUT",
-		Path:       "/:user_id",
+		Path:       "/"+server.URIParam("user_id"),
 		Middleware: make([]string, 0),
 		Action:     Update,
 	}
 	Resource.Actions["Delete"] = &resource.ActionPath{ 	
 		Verb:       "DELETE",
-		Path:       "/:user_id",
+		Path:       "/"+server.URIParam("user_id"),
 		Middleware: make([]string, 0),
 		Action:     Delete,
 	}
@@ -191,7 +192,7 @@ func init_continue() {
 	view.Init()
 	Resource.Actions["EmailConfirm"] = &resource.ActionPath{
 		Verb:       "GET",
-		Path:       "/:user_id/:email_confirm_param",
+		Path:       "/" + server.URIParam("user_id") + "/" + server.URIParam("email_confirm_param"),
 		Middleware: make([]string, 0),
 		Action:     EmailConfirm,
 	}

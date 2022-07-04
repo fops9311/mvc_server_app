@@ -33,6 +33,7 @@ func Send(to []string, subject string, payload string) (err error) {
 	))
 
 	// Sending email.
+	fmt.Println(smtpHost+":"+smtpPort, auth, from, to)
 	err = smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, body)
 	if err != nil {
 		fmt.Println(err)
