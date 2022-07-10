@@ -1,13 +1,17 @@
-package assets_controller
+package object_controller
+
 //import
 import (
 	"bytes"
+	"fmt"
+	"strconv"
 
+	localobjects "github.com/fops9311/mvc_server_app/database/LocalObjects"
 	"github.com/fops9311/mvc_server_app/model/controller"
 	"github.com/fops9311/mvc_server_app/model/resource"
 	"github.com/fops9311/mvc_server_app/model/server"
-	view "github.com/fops9311/mvc_server_app/views/assets"
-)                                              //import
+	view "github.com/fops9311/mvc_server_app/views/object"
+) //import
 var Resource resource.Resurce
 
 var Index controller.Action = func(params map[string]interface{}) (result string, err error) {
@@ -50,46 +54,46 @@ func Init() {
 	view.Init()
 	init_begin()
 	Resource = resource.NewResource()
-	Resource.Key = "/assetss"
-	Resource.Actions["Index"] = &resource.ActionPath{ 	
+	Resource.Key = "/objects"
+	Resource.Actions["Index"] = &resource.ActionPath{
 		Verb:       "GET",
 		Path:       "",
 		Middleware: make([]string, 0),
 		Action:     Index,
 	}
-	Resource.Actions["Edit"] = &resource.ActionPath{ 	
+	Resource.Actions["Edit"] = &resource.ActionPath{
 		Verb:       "GET",
-		Path:       "/"+server.URIParam("assets_id")+"/edit",
+		Path:       "/" + server.URIParam("object_id") + "/edit",
 		Middleware: make([]string, 0),
 		Action:     Edit,
 	}
-	Resource.Actions["New"] = &resource.ActionPath{ 	
+	Resource.Actions["New"] = &resource.ActionPath{
 		Verb:       "GET",
 		Path:       "/new",
 		Middleware: make([]string, 0),
 		Action:     New,
 	}
-	Resource.Actions["Show"] = &resource.ActionPath{ 	
+	Resource.Actions["Show"] = &resource.ActionPath{
 		Verb:       "GET",
-		Path:       "/"+server.URIParam("assets_id"),
+		Path:       "/" + server.URIParam("object_id"),
 		Middleware: make([]string, 0),
 		Action:     Show,
 	}
-	Resource.Actions["Create"] = &resource.ActionPath{ 	
+	Resource.Actions["Create"] = &resource.ActionPath{
 		Verb:       "POST",
 		Path:       "",
 		Middleware: make([]string, 0),
 		Action:     Create,
 	}
-	Resource.Actions["Update"] = &resource.ActionPath{ 	
+	Resource.Actions["Update"] = &resource.ActionPath{
 		Verb:       "PUT",
-		Path:       "/"+server.URIParam("assets_id"),
+		Path:       "/" + server.URIParam("object_id"),
 		Middleware: make([]string, 0),
 		Action:     Update,
 	}
-	Resource.Actions["Delete"] = &resource.ActionPath{ 	
+	Resource.Actions["Delete"] = &resource.ActionPath{
 		Verb:       "DELETE",
-		Path:       "/"+server.URIParam("assets_id"),
+		Path:       "/" + server.URIParam("object_id"),
 		Middleware: make([]string, 0),
 		Action:     Delete,
 	}
@@ -100,15 +104,62 @@ func Init() {
 //!!define init_begin func(){}
 //!!define init_continue func(){}
 //DO NOT CHANGE ABOVE --GENERATED--
+
 func init_begin() {
+
+	Index = func(params map[string]interface{}) (result string, err error) {
+		var user_id string
+		switch v := params["user_id"].(type) {
+		case string:
+			user_id = v
+		default:
+			user_id = ""
+		}
+
+		buf := bytes.NewBuffer([]byte{})
+		params["c_obj_sl"] = localobjects.GetObjects(user_id)
+		err = view.Index(params, buf)
+
+		return buf.String(), err
+	}
 
 }
 func init_continue() {
 	view.Init()
-	delete(Resource.Actions, "Delete")
-	delete(Resource.Actions, "Update")
-	delete(Resource.Actions, "Create")
-	delete(Resource.Actions, "New")
-	delete(Resource.Actions, "Edit")
-	delete(Resource.Actions, "Index")
+
+	Resource.Actions["AddSample"] = &resource.ActionPath{
+		Verb:       "POST",
+		Path:       "/" + server.URIParam("object_id") + "/now",
+		Middleware: make([]string, 0),
+		Action:     AddSample,
+	}
+
+	Resource.Actions["SampleNew"] = &resource.ActionPath{
+		Verb:       "GET",
+		Path:       "/" + server.URIParam("object_id") + "/sample_new",
+		Middleware: make([]string, 0),
+		Action:     SampleNew,
+	}
+}
+
+var AddSample controller.Action = func(params map[string]interface{}) (result string, err error) {
+	//buf := bytes.NewBuffer([]byte{})
+	//err = view.Create(params, buf)
+	ObjectId := fmt.Sprintf("%s", params["object_id"])
+	//decodedObjectId, _ := url.QueryUnescape(encodedObjectId)
+	fmt.Printf("%s/%s new sample = %s\n", params["user_id"], params["object_id"], params["sample_value"])
+	var value float64
+	switch v := params["sample_value"].(type) {
+	case []string:
+		if len(v) > 0 {
+			value, _ = strconv.ParseFloat(v[0], 32)
+		}
+	}
+	return "Sample added", localobjects.AddSample(fmt.Sprintf("%s", params["user_id"])+"/"+ObjectId, float32(value))
+}
+var SampleNew controller.Action = func(params map[string]interface{}) (result string, err error) {
+	buf := bytes.NewBuffer([]byte{})
+	err = view.SampleNew(params, buf)
+
+	return buf.String(), err
 }

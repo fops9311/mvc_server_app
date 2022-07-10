@@ -1,0 +1,12 @@
+<aside class="menu is-fullwidth">
+    <p class="menu-label">
+      Object list
+    </p>
+    <ul class="menu-list">
+    {{range $val := .c_obj_sl}}
+      <li><a>{{$val.Id}}</a></li>
+      {{else}}
+      <li><a>Empty</a></li>
+    {{end}}
+    </ul>
+</aside>

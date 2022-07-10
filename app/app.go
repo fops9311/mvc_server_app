@@ -53,9 +53,10 @@ var ObjectAlreadyExist error
 var ObjectComponentNotDefined error
 
 var Objects = struct {
-	GetObject     func(object_id string, starttime time.Time, endtime time.Time, sampleCount int) (object Object, err error)
-	AddSample     func(object_id string, value float32) (err error)
-	Authorization func(user_id string, object_id string) bool
+	AddObject  func(obj Object) (err error)
+	GetObjects func(object_id string) []Object
+	GetObject  func(object_id string, starttime time.Time, endtime time.Time, sampleCount int) (object Object, err error)
+	AddSample  func(object_id string, value float32) (err error)
 }{
 	GetObject: func(object_id string, starttime time.Time, endtime time.Time, sampleCount int) (object Object, err error) {
 		return Object{}, ObjectComponentNotDefined
@@ -63,13 +64,18 @@ var Objects = struct {
 	AddSample: func(object_id string, value float32) (err error) {
 		return ObjectComponentNotDefined
 	},
-	Authorization: func(user_id, object_id string) bool { return false },
+	AddObject: func(obj Object) (err error) {
+		return ObjectComponentNotDefined
+	},
+	GetObjects: func(object_id string) []Object {
+		return []Object{}
+	},
 }
 
 type Object struct {
-	Id       string
-	Children []Object
-	Samples  []Sample
+	Id         string
+	Samples    []Sample
+	LastSample Sample
 }
 type Sample struct {
 	Timestamp time.Time

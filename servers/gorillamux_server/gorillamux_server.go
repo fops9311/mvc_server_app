@@ -3,6 +3,7 @@ package gorillamuxserver
 import (
 	"fmt"
 	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/fops9311/mvc_server_app/model/resource"
@@ -12,7 +13,7 @@ import (
 
 func Init() {
 	fmt.Println("Using Gorilla mux...")
-	Server.router = mux.NewRouter()
+	Server.router = mux.NewRouter().UseEncodedPath()
 	server.URIParam = func(s string) string {
 		return fmt.Sprintf("{%s}", s)
 	}
@@ -36,7 +37,9 @@ func makeParams(r *http.Request) (params map[string]interface{}) {
 	params = make(map[string]interface{})
 	routeVars := mux.Vars(r)
 	for i := range routeVars {
-		params[i] = routeVars[i]
+		decoded, _ := url.QueryUnescape(routeVars[i])
+		params[i] = decoded
+		params["enc_"+i] = routeVars[i]
 	}
 	err := r.ParseForm()
 	if err == nil {

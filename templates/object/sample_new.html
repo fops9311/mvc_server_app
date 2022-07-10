@@ -1,0 +1,36 @@
+<script>
+  document.addEventListener('submit', (e) => {
+    // Store reference to form to make later code easier to read
+    const form = e.target;
+    if (e.target.id == "{{ .user_id}}/objects/{{ .object_id}}"){
+      const data = new URLSearchParams();
+      for (const pair of new FormData(form)) {
+        data.append(pair[0], pair[1]);
+      }
+      // Post data using the Fetch API
+      fetch(form.action, {
+        method: form.method,
+        body: data,
+      });
+      // Prevent the default form submit
+      e.preventDefault();
+    }
+});
+</script>
+<form class="panel" action="/{{ .version}}/users/{{ .enc_user_id}}/objects/{{ .enc_object_id}}/now" method="POST" id="{{ .user_id}}/objects/{{ .object_id}}">
+    <p class="panel-heading">
+        Add sample to {{ .user_id}}/objects/{{ .object_id}}
+    </p>
+    <div class="panel-block">
+        <p class="control has-icons-left">
+            <input class="input" type="number" step="0.01" name="sample_value" id="sample_value">
+          <span class="icon is-left">
+            <i class="block" aria-hidden="true">V:</i>
+          </span>
+        </p>
+    </div>
+    
+    <div class="panel-block">
+        <button class="button is-primary is-fullwidth">POST</button>
+    </div>
+</form>

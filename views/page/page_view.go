@@ -1,5 +1,4 @@
 package page_view
-
 //import
 import (
 	"fmt"
@@ -8,8 +7,8 @@ import (
 
 	"github.com/fops9311/mvc_server_app/tassets"
 	layout "github.com/fops9311/mvc_server_app/views/layout"
-) //import
-func Dummy() {
+)     //import
+func Dummy(){
 	fmt.Print("hi")
 }
 
@@ -29,31 +28,32 @@ func renderTemplate(params map[string]interface{}, w io.Writer, templ string, te
 	return nil
 }
 
-var Index func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+
+var Index func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, index, "page_Index")
 }
 
-var Edit func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+var Edit func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, edit, "page_Edit")
 }
 
-var New func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+var New func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, new, "page_New")
 }
 
-var Show func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+var Show func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, show, "page_Show")
 }
 
-var Create func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+var Create func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, create, "page_Create")
 }
 
-var Update func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+var Update func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, update, "page_Update")
 }
 
-var Delete func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+var Delete func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, delete, "page_Delete")
 }
 
@@ -65,7 +65,8 @@ var create string
 var update string
 var delete string
 
-func Init() {
+
+func Init(){
 	tassets.InitDir("./templates")
 	index = tassets.GetAsset("templates/page/page_index.html")
 	edit = tassets.GetAsset("templates/page/page_edit.html")
@@ -82,13 +83,19 @@ func Init() {
 
 func init_continue() {
 	edit = layout.Layout(
-		tassets.GetAsset("templates/page_layout/masterpage.html"),
+		tassets.GetAsset("templates/components/layout_htmlpage/index.html"),
 
+		tassets.GetAsset("templates/components/head/index.html"),
+		tassets.GetAsset("templates/components/header/index.html"),
+		tassets.GetAsset("templates/components/footer/index.html"),
 		tassets.GetAsset("templates/page/page_edit.html"),
 	)
 	var show_index string = layout.Layout(
-		tassets.GetAsset("templates/page_layout/masterpage.html"),
+		tassets.GetAsset("templates/components/layout_htmlpage/index.html"),
 
+		tassets.GetAsset("templates/components/head/index.html"),
+		tassets.GetAsset("templates/components/header/index.html"),
+		tassets.GetAsset("templates/components/footer/index.html"),
 		layout.Layout(
 			tassets.GetAsset("templates/components/layout_fullwh_cent/index.html"),
 
@@ -96,7 +103,11 @@ func init_continue() {
 		),
 	)
 	var show_signin string = layout.Layout(
-		tassets.GetAsset("templates/page_layout/masterpage.html"),
+		tassets.GetAsset("templates/components/layout_htmlpage/index.html"),
+
+		tassets.GetAsset("templates/components/head/index.html"),
+		tassets.GetAsset("templates/components/header/index.html"),
+		tassets.GetAsset("templates/components/footer/index.html"),
 
 		layout.Layout(
 			tassets.GetAsset("templates/components/layout_fullwh_cent/index.html"),
@@ -105,8 +116,11 @@ func init_continue() {
 		),
 	)
 	var show_signup string = layout.Layout(
-		tassets.GetAsset("templates/page_layout/masterpage.html"),
+		tassets.GetAsset("templates/components/layout_htmlpage/index.html"),
 
+		tassets.GetAsset("templates/components/head/index.html"),
+		tassets.GetAsset("templates/components/header/index.html"),
+		tassets.GetAsset("templates/components/footer/index.html"),
 		layout.Layout(
 			tassets.GetAsset("templates/components/layout_fullwh_cent/index.html"),
 
@@ -114,6 +128,8 @@ func init_continue() {
 		),
 	)
 	Show = func(params map[string]interface{}, w io.Writer) (err error) {
+		params["css_class_parent_tile1"] = "is-vertical is-4"
+		params["css_class_parent_tile2"] = "is-vertical is-8"
 		switch v := params["page_id"].(type) {
 		case string:
 			switch v {
@@ -123,6 +139,31 @@ func init_continue() {
 				return renderTemplate(params, w, show_signin, "page_Show_signin")
 			case "index":
 				return renderTemplate(params, w, show_index, "page_Show_index")
+			case "test":
+
+				return renderTemplate(
+					params,
+					w,
+					layout.Layout(
+						tassets.GetAsset("templates/components/layout_htmlpage/index.html"),
+
+						tassets.GetAsset("templates/components/head/index.html"),
+						tassets.GetAsset("templates/components/header/index.html"),
+						tassets.GetAsset("templates/components/footer/index.html"),
+
+						layout.Layout(
+							tassets.GetAsset("templates/components/layout_tiles2/index.html"),
+
+							tassets.GetAsset("templates/components/object_panel/index.html"),
+							layout.Layout(
+								tassets.GetAsset("templates/components/layout_concat2/index.html"),
+
+								tassets.GetAsset("templates/components/trend_panel/index.html"),
+								tassets.GetAsset("templates/components/summary_panel/index.html"),
+							),
+						),
+					), "page_Show_test",
+				)
 			}
 		}
 		return renderTemplate(params, w, show_index, "page_Show_index")
