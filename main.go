@@ -18,6 +18,7 @@ import (
 	"github.com/fops9311/mvc_server_app/model/resource"
 	"github.com/fops9311/mvc_server_app/model/server"
 	gorillamuxserver "github.com/fops9311/mvc_server_app/servers/gorillamux_server"
+	"github.com/fops9311/mvc_server_app/views/components"
 	"github.com/joho/godotenv"
 )
 
@@ -25,6 +26,7 @@ func init() {
 	gorillamuxserver.Init()
 	page_controller.Init()
 	user_controller.Init()
+	components.Init()
 
 	object_controller.Init()
 
