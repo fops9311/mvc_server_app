@@ -54,6 +54,16 @@ var trendtrace1 = {
   
   
   var trendlayout = {
+
+    showlegend: true,
+
+    legend: {
+
+      x: 1,
+  
+      xanchor: 'right',
+  
+      y: 1},
   
     title: 'Time Series with Rangeslider',
   
