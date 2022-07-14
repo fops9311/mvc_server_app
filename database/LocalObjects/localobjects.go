@@ -72,6 +72,7 @@ var GetObjects = func(object_id string) (result []app.Object) {
 	result = make([]app.Object, 0)
 	for key, val := range Objects {
 		if strings.HasPrefix(key, object_id+"/") {
+			//fmt.Println(key)
 			result = append(result, *val)
 		}
 	}

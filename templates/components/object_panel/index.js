@@ -1,16 +1,3 @@
-function refresh_obj_list(){
-    object_list = document.getElementById("object_list");
-    fetch("/v1/users/fops9311@yandex.ru/objects", {
-        method: "GET",
-    }).then(function(response) {
-        return response.text().then(function(text) {
-            object_list.innerHTML = text;
-        });
-      });
-}
-var labels = ["fops9311@yandex.ru", "fops9311@yandex.ru/v1", "fops9311@yandex.ru/v2", "fops9311@yandex.ru/v3",  "fops9311@yandex.ru/v3/v4", "fops9311@yandex.ru/v3/v5", "fops9311@yandex.ru/v3/v4/1","fops9311@yandex.ru/v3/v4/2", "fops9311@yandex.ru/v3/v4/311"]
-
-var parents = ["", "fops9311@yandex.ru", "fops9311@yandex.ru", "fops9311@yandex.ru", "fops9311@yandex.ru/v3", "fops9311@yandex.ru/v3", "fops9311@yandex.ru/v3/v4", "fops9311@yandex.ru/v3/v4", "fops9311@yandex.ru/v3/v4"]
 
 var data = [{
 
@@ -95,4 +82,11 @@ var layout = {
 
 var config = {responsive: true}
 
-Plotly.newPlot('myDiv', data, layout, config)
+//Plotly.newPlot('myDiv', data, layout, config)
+
+var myPlot = document.getElementById('myDiv')
+
+myPlot.on('plotly_click', function(data){
+  localStorage.setItem('current_obj', data.points[0].label);
+  console.log(localStorage.getItem('current_obj') );
+});

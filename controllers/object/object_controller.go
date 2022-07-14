@@ -3,6 +3,7 @@ package object_controller
 //import
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"strconv"
 
@@ -109,6 +110,26 @@ func init_begin() {
 
 	Index = func(params map[string]interface{}) (result string, err error) {
 		var user_id string
+		var subdir string
+		switch v := params["user_id"].(type) {
+		case string:
+			user_id = v
+		default:
+			user_id = ""
+		}
+
+		switch v := params["subdir"].(type) {
+		case string:
+			subdir = "/" + v
+		default:
+			subdir = ""
+		}
+
+		b, err := json.Marshal(localobjects.GetObjects(user_id + subdir))
+		return string(b), err
+	}
+	Index1 := func(params map[string]interface{}) (result string, err error) {
+		var user_id string
 		switch v := params["user_id"].(type) {
 		case string:
 			user_id = v
@@ -122,6 +143,7 @@ func init_begin() {
 
 		return buf.String(), err
 	}
+	_ = Index1
 
 }
 func init_continue() {

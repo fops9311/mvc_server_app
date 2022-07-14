@@ -38,7 +38,8 @@ func init() {
 }
 func main() {
 	root := resource.NewResource()
-	root.Key = "/" + server.URIParam("version")
+	//root.Key = "/" + server.URIParam("version")
+	page_controller.Resource.Key = "/" + server.URIParam("version") + page_controller.Resource.Key
 	user_controller.Resource.Key = "/" + server.URIParam("version") + user_controller.Resource.Key
 	root.Children["page"] = page_controller.Resource
 	root.Children["user"] = user_controller.Resource
