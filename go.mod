@@ -3,6 +3,7 @@ module github.com/fops9311/mvc_server_app
 go 1.18
 
 require (
+	github.com/ClickHouse/clickhouse-go v1.5.4
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/gorilla/mux v1.8.0
 	github.com/joho/godotenv v1.4.0
@@ -10,6 +11,7 @@ require (
 )
 
 require (
+	github.com/cloudflare/golz4 v0.0.0-20150217214814-ef862a3cdc58 // indirect
 	github.com/labstack/gommon v0.3.1 // indirect
 	github.com/mattn/go-colorable v0.1.11 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect

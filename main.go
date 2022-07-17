@@ -14,8 +14,10 @@ import (
 	object_controller "github.com/fops9311/mvc_server_app/controllers/object"
 	page_controller "github.com/fops9311/mvc_server_app/controllers/page"
 	user_controller "github.com/fops9311/mvc_server_app/controllers/user"
-	objects "github.com/fops9311/mvc_server_app/database/LocalObjects"
+
+	//objects "github.com/fops9311/mvc_server_app/database/LocalObjects"
 	users "github.com/fops9311/mvc_server_app/database/LocalUsers"
+	objects "github.com/fops9311/mvc_server_app/database/clickhouseobjects"
 	"github.com/fops9311/mvc_server_app/model/resource"
 	"github.com/fops9311/mvc_server_app/model/server"
 	gorillamuxserver "github.com/fops9311/mvc_server_app/servers/gorillamux_server"
