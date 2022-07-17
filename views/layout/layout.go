@@ -39,3 +39,19 @@ func Layout(layout string, inner_contents ...string) (res string) {
 	}
 	return res
 }
+func LayoutTAsset(tasset string) (res string) {
+	res = tassets.GetAsset(tasset)
+	for _, s := range tassets.GetKeys() {
+		old := fmt.Sprintf(format1, s)
+		if strings.Contains(res, old) {
+			res = strings.ReplaceAll(res, old, LayoutTAsset(s))
+		}
+	}
+	for _, s := range tassets.GetKeys() {
+		old := fmt.Sprintf(format2, s)
+		if strings.Contains(res, old) {
+			res = strings.ReplaceAll(res, old, LayoutTAsset(s))
+		}
+	}
+	return res
+}

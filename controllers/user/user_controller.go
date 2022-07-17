@@ -2,6 +2,7 @@ package user_controller
 //import
 import (
 	"bytes"
+	"fmt"
 	"math/rand"
 	"os"
 	"time"
@@ -11,8 +12,10 @@ import (
 	"github.com/fops9311/mvc_server_app/model/resource"
 	"github.com/fops9311/mvc_server_app/model/server"
 	"github.com/fops9311/mvc_server_app/utils/emailer"
+	"github.com/fops9311/mvc_server_app/views/components"
+	"github.com/fops9311/mvc_server_app/views/layout"
 	view "github.com/fops9311/mvc_server_app/views/user"
-)                                           //import
+)   //import
 var Resource resource.Resurce
 
 var Index controller.Action = func(params map[string]interface{}) (result string, err error) {
@@ -196,7 +199,88 @@ func init_continue() {
 		Middleware: make([]string, 0),
 		Action:     EmailConfirm,
 	}
+	Resource.Actions["Auth"] = &resource.ActionPath{
+		Verb:       "POST",
+		Path:       "/auth",
+		Middleware: make([]string, 0),
+		Action:     AuthMiddleware(Auth),
+	}
+	Resource.Actions["Dashbord"] = &resource.ActionPath{
+		Verb:       "GET",
+		Path:       "/" + server.URIParam("user_id") + "/p/dashboard",
+		Middleware: make([]string, 0),
+		Action:     AuthMiddleware(Dashboard),
+	}
 	Resource.Actions["Edit"].Middleware = append(Resource.Actions["Edit"].Middleware, "BasicUserAuth")
+}
+func Dashboard(params map[string]interface{}) (result string, err error) {
+	return layout.Layout(
+		components.Render(components.Layout_htmlpage, params),
+
+		components.Render(components.Head, params),
+		components.Render(components.Header, params),
+		components.Render(components.Footer, params),
+
+		layout.Layout(
+			components.Render(components.Layout_concat2, params),
+
+			components.Render(components.Asyncdata, params),
+			layout.Layout(
+				components.Render(components.Layout_concat2, params),
+
+				components.Render(components.ObjectPanel, params),
+				layout.Layout(
+					components.Render(components.Layout_concat2, params),
+
+					components.Render(components.TrendPanel, params),
+					components.Render(components.SummaryPanel, params),
+				),
+			),
+		),
+	), nil
+}
+
+func Auth(params map[string]interface{}) (result string, err error) {
+	return "Ok", nil
+}
+
+func AuthMiddleware(action controller.Action) controller.Action {
+	return func(params map[string]interface{}) (result string, err error) {
+		var login string
+		var password string
+		fmt.Println("Auth Middleware ... ", login)
+		switch v := params["login"].(type) {
+		case string:
+			login = v
+		case []string:
+			if len(v) > 0 {
+				login = v[0]
+			} else {
+				return "NotOk", nil
+			}
+		default:
+			return "NotOk", nil
+		}
+		fmt.Println("Login ", login)
+		switch v := params["password"].(type) {
+		case string:
+			password = v
+		case []string:
+			if len(v) > 0 {
+				password = v[0]
+			} else {
+				return "NotOk", nil
+			}
+		default:
+			return "NotOk", nil
+		}
+		fmt.Println("Password ", password)
+		if app.Users.Authentication(login, password) {
+			fmt.Println("Ok :)")
+			return action(params)
+		}
+		return "NotOk", nil
+	}
 }
 
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")

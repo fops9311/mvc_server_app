@@ -1,5 +1,4 @@
 package object_view
-
 //import
 import (
 	"fmt"
@@ -8,8 +7,8 @@ import (
 
 	"github.com/fops9311/mvc_server_app/tassets"
 	"github.com/fops9311/mvc_server_app/views/layout"
-) //import
-func Dummy() {
+)     //import
+func Dummy(){
 	fmt.Print("hi")
 }
 
@@ -29,31 +28,32 @@ func renderTemplate(params map[string]interface{}, w io.Writer, templ string, te
 	return nil
 }
 
-var Index func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+
+var Index func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, index, "object_Index")
 }
 
-var Edit func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+var Edit func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, edit, "object_Edit")
 }
 
-var New func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+var New func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, new, "object_New")
 }
 
-var Show func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+var Show func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, show, "object_Show")
 }
 
-var Create func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+var Create func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, create, "object_Create")
 }
 
-var Update func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+var Update func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, update, "object_Update")
 }
 
-var Delete func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error) {
+var Delete func(params map[string]interface{}, w io.Writer) (err error) = func(params map[string]interface{}, w io.Writer) (err error){
 	return renderTemplate(params, w, delete, "object_Delete")
 }
 
@@ -65,7 +65,8 @@ var create string
 var update string
 var delete string
 
-func Init() {
+
+func Init(){
 	tassets.InitDir("./templates")
 	index = tassets.GetAsset("templates/object/object_index.html")
 	edit = tassets.GetAsset("templates/object/object_edit.html")

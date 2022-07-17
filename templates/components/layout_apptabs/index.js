@@ -1,0 +1,25 @@
+displayAsPage("object_panelComponent",object_panelPage) 
+displayAsPage("trend_panelComponent",trend_panelPage)
+displayAsPage("controls_panelComponent",controls_panelPage)
+displayAsPage("loginformComponent",loginformPage)
+
+ifPageDisplayed(
+    ()=>{document.getElementById("object_panelTab").classList.add("is-active")},
+    ()=>{document.getElementById("object_panelTab").classList.remove("is-active")},
+    object_panelPage
+)
+ifPageDisplayed(
+    ()=>{document.getElementById("trend_panelTab").classList.add("is-active")},
+    ()=>{document.getElementById("trend_panelTab").classList.remove("is-active")},
+    trend_panelPage
+)
+ifPageDisplayed(
+    ()=>{document.getElementById("controls_panelTab").classList.add("is-active")},
+    ()=>{document.getElementById("controls_panelTab").classList.remove("is-active")},
+    controls_panelPage
+)
+ifPageDisplayed(
+    ()=>{document.getElementById("loginformTab").classList.add("is-active")},
+    ()=>{document.getElementById("loginformTab").classList.remove("is-active")},
+    loginformPage
+)

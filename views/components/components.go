@@ -5,7 +5,7 @@ import (
 	"sync"
 	"text/template"
 
-	"github.com/fops9311/mvc_server_app/tassets"
+	"github.com/fops9311/mvc_server_app/views/layout"
 )
 
 type ViewRequest struct {
@@ -37,6 +37,10 @@ var (
 	SummaryPanel       chan ViewRequest = make(chan ViewRequest, 5)
 	TrendPanel         chan ViewRequest = make(chan ViewRequest, 5)
 	Layout_htmldoc     chan ViewRequest = make(chan ViewRequest, 5)
+	Asyncdata          chan ViewRequest = make(chan ViewRequest, 5)
+	Loginform          chan ViewRequest = make(chan ViewRequest, 5)
+	Layout_appsidebar  chan ViewRequest = make(chan ViewRequest, 5)
+	Layout_apptabs     chan ViewRequest = make(chan ViewRequest, 5)
 )
 
 var (
@@ -58,6 +62,10 @@ var (
 	DIR_SummaryPanel       string = "templates/components/summary_panel/index.html"
 	DIR_TrendPanel         string = "templates/components/trend_panel/index.html"
 	DIR_Layout_htmldoc     string = "templates/components/layout_htmldoc/index.html"
+	DIR_Asyncdata          string = "templates/components/asyncdata/index.html"
+	DIR_Loginform          string = "templates/components/loginform/index.html"
+	DIR_Layout_appsidebar  string = "templates/components/layout_appsidebar/index.html"
+	DIR_Layout_apptabs     string = "templates/components/layout_apptabs/index.html"
 )
 
 func Init() {
@@ -67,7 +75,7 @@ func Init() {
 			req = <-c
 			req.Respounce <- renderTemplate(
 				req.Params,
-				tassets.GetAsset(dir),
+				layout.LayoutTAsset(dir),
 				dir,
 			)
 		}
@@ -127,6 +135,18 @@ func Init() {
 	go view(
 		Layout_htmldoc,
 		DIR_Layout_htmldoc)
+	go view(
+		Asyncdata,
+		DIR_Asyncdata)
+	go view(
+		Loginform,
+		DIR_Loginform)
+	go view(
+		Layout_appsidebar,
+		DIR_Layout_appsidebar)
+	go view(
+		Layout_apptabs,
+		DIR_Layout_apptabs)
 }
 
 var tmap map[string]*template.Template = make(map[string]*template.Template)

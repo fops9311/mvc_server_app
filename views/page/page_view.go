@@ -7,7 +7,7 @@ import (
 
 	"github.com/fops9311/mvc_server_app/tassets"
 	layout "github.com/fops9311/mvc_server_app/views/layout"
-)     //import
+)         //import
 func Dummy(){
 	fmt.Print("hi")
 }

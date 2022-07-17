@@ -118,14 +118,35 @@ func init_begin() {
 		}
 		return r.Result, nil
 	}
+	Index = func(params map[string]interface{}) (result string, err error) {
+		return layout.Layout(
+			components.Render(components.Layout_htmlpage, params),
+
+			components.Render(components.Head, params),
+			components.Render(components.Header, params),
+			components.Render(components.Footer, params),
+
+			layout.Layout(
+				components.Render(components.Layout_apptabs, params),
+
+				components.Render(components.ObjectPanel, params),
+				components.Render(components.TrendPanel, params),
+				components.Render(components.SummaryPanel, params),
+				layout.Layout(
+					components.Render(components.Layout_fullwh_cent, params),
+
+					components.Render(components.Loginform, params),
+				),
+			),
+		), nil
+	}
 	Show = func(params map[string]interface{}) (result string, err error) {
 		params["css_class_parent_tile1"] = "is-vertical is-4"
 		params["css_class_parent_tile2"] = "is-vertical is-8"
 		switch v := params["page_id"].(type) {
 		case string:
 			switch v {
-			case "test":
-
+			case "login":
 				return layout.Layout(
 					components.Render(components.Layout_htmlpage, params),
 
@@ -134,17 +155,13 @@ func init_begin() {
 					components.Render(components.Footer, params),
 
 					layout.Layout(
-						components.Render(components.Layout_tiles2, params),
+						components.Render(components.Layout_fullwh_cent, params),
 
-						components.Render(components.ObjectPanel, params),
-						layout.Layout(
-							components.Render(components.Layout_concat2, params),
-
-							components.Render(components.TrendPanel, params),
-							components.Render(components.SummaryPanel, params),
-						),
+						components.Render(components.Loginform, params),
 					),
 				), nil
+
+			case "test":
 
 			}
 		}

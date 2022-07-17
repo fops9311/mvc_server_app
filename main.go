@@ -2,8 +2,9 @@
 //go:generate go run ./gogenerate/mvcgen.go page user assets object
 //go:generate go run ./gogenerate/uicomponents/uicomponents.go navbar menu layout_concat2 layout_tiles2 layout_fullwh_cent
 //go:generate go run ./gogenerate/uicomponents/uicomponents.go layout_grid2x2 signin_panel signup_panel message_panel object_panel trend_panel summary_panel message_panel
-//go:generate go run ./gogenerate/uicomponents/uicomponents.go header head footer
-//go:generate go run ./gogenerate/uicomponents/uicomponents.go layout_htmlpage
+//go:generate go run ./gogenerate/uicomponents/uicomponents.go header head footer loginform
+//go:generate go run ./gogenerate/uicomponents/uicomponents.go layout_htmlpage layout_appsidebar layout_apptabs
+//go:generate go run ./gogenerate/uicomponents/uicomponents.go asyncdata
 package main
 
 import (
