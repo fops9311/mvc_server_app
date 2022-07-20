@@ -1,3 +1,10 @@
+function customDateFormat(d){
+return d.toISOString().replace("T"," ").replace("Z"," ")
+}
+console.log("testing date format...")
+console.log(customDateFormat(new Date(Date.now() - 600000)))
+console.log(customDateFormat(new Date(Date.now() + 600000)))
+console.log(customDateFormat((function(d){ d.setMinutes(d.getMinutes()+10); return d})(new Date)))
 asyncCallbacks.push(refresh_trn)
 var trn_created = false
 function refresh_trn(objects){
@@ -5,13 +12,13 @@ function refresh_trn(objects){
     Plotly.newPlot(
         'myTrend', 
         transformObjectsTraces(objects),
-        trendlayout,
+        trendlayout(),
         {responsive: true},
     );
     trn_created = false
     }
 }
-var trendlayout = {
+var trendlayout = ()=>{return {
     hovermode: "x unified",
     showlegend: false,
     legend: {
@@ -22,7 +29,7 @@ var trendlayout = {
       y: 1},
     title: 'Time Series with Rangeslider',
     xaxis: {
-      autorange: true,
+      autorange: false,
       rangeselector: {buttons: [
           {
             count: 1,
@@ -38,15 +45,17 @@ var trendlayout = {
           },
           {step: 'all'}
         ]},
-      rangeslider: {range: ['2022-07-06', '2022-07-20']},
+      //rangeslider: {range: [customDateFormat(new Date(Date.now() - 600000)), customDateFormat(new Date(Date.now() + 600000))]},
+      range: [customDateFormat(new Date(Date.now() - 600000 + 10800000)), customDateFormat(new Date(Date.now() + 10800000 + 30000))],
       type: 'date'
     },
     yaxis: {
-      autorange: true,
+      autorange: false,
+      range:[0,10],
       fixedrange: false,
       type: 'linear'
     }
-  };
+  }};
   
 console.log("testting tranformSamplesTrace")
 console.log(tranformSamplesTrace(
@@ -75,8 +84,9 @@ function tranformSamplesTrace(samples,id){
             shape: 'linear'
         }
     }
-    samples.forEach(s=>{
-        trace.x.push(s.Timestamp.replace("T"," "))
+    samples.sort((a, b) => a.Timestamp > b.Timestamp).forEach(s=>{
+        console.log(s.Timestamp)
+        trace.x.push(s.Timestamp)//.replace("T"," "))
         trace.y.push(s.Value)
     })
     

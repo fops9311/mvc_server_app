@@ -55,7 +55,7 @@ var AddSample = func(object_id string, value float32) (err error) {
 			Samples: make([]app.Sample, 0),
 		}
 	}
-	NewSample := app.Sample{Timestamp: time.Now(), Value: value}
+	NewSample := app.Sample{Timestamp: fmt.Sprint(time.Now()), Value: value}
 	Objects[object_id].Samples = append(Objects[object_id].Samples, NewSample)
 	Objects[object_id].LastSample = NewSample
 	return nil

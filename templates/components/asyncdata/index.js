@@ -4,7 +4,7 @@ var asyncCallbacks = []
 var appUser = localStorage.getItem("login")
 
 var pageDisplayCallbacks = []
-
+var REFRESH_RATE = 10000
 var app = {
     activePage: 0,
     auth: false,
@@ -62,10 +62,12 @@ function ifPageDisplayed(ifTrue,ifFalse,page_id){
 }
     
 
-setInterval(refresh_userObjects,3000)
+setInterval(refresh_userObjects,REFRESH_RATE)
 function refresh_userObjects() {
     object_list = document.getElementById("object_list");
-    fetch("/v1/users/fops9311@yandex.ru/objects", {
+    fetch("/v1/users/"+localStorage.getItem("login")+"/objects?"+ new URLSearchParams({
+        password: localStorage.getItem("password"),
+    }), {
         method: "GET",
     }).then(function(response) {
         return response.text().then(function(text) {

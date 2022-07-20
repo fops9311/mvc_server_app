@@ -1,4 +1,5 @@
 package user_controller
+
 //import
 import (
 	"bytes"
@@ -15,7 +16,7 @@ import (
 	"github.com/fops9311/mvc_server_app/views/components"
 	"github.com/fops9311/mvc_server_app/views/layout"
 	view "github.com/fops9311/mvc_server_app/views/user"
-)   //import
+) //import
 var Resource resource.Resurce
 
 var Index controller.Action = func(params map[string]interface{}) (result string, err error) {
@@ -59,45 +60,45 @@ func Init() {
 	init_begin()
 	Resource = resource.NewResource()
 	Resource.Key = "/users"
-	Resource.Actions["Index"] = &resource.ActionPath{ 	
+	Resource.Actions["Index"] = &resource.ActionPath{
 		Verb:       "GET",
 		Path:       "",
 		Middleware: make([]string, 0),
 		Action:     Index,
 	}
-	Resource.Actions["Edit"] = &resource.ActionPath{ 	
+	Resource.Actions["Edit"] = &resource.ActionPath{
 		Verb:       "GET",
-		Path:       "/"+server.URIParam("user_id")+"/edit",
+		Path:       "/" + server.URIParam("user_id") + "/edit",
 		Middleware: make([]string, 0),
 		Action:     Edit,
 	}
-	Resource.Actions["New"] = &resource.ActionPath{ 	
+	Resource.Actions["New"] = &resource.ActionPath{
 		Verb:       "GET",
 		Path:       "/new",
 		Middleware: make([]string, 0),
 		Action:     New,
 	}
-	Resource.Actions["Show"] = &resource.ActionPath{ 	
+	Resource.Actions["Show"] = &resource.ActionPath{
 		Verb:       "GET",
-		Path:       "/"+server.URIParam("user_id"),
+		Path:       "/" + server.URIParam("user_id"),
 		Middleware: make([]string, 0),
 		Action:     Show,
 	}
-	Resource.Actions["Create"] = &resource.ActionPath{ 	
+	Resource.Actions["Create"] = &resource.ActionPath{
 		Verb:       "POST",
 		Path:       "",
 		Middleware: make([]string, 0),
 		Action:     Create,
 	}
-	Resource.Actions["Update"] = &resource.ActionPath{ 	
+	Resource.Actions["Update"] = &resource.ActionPath{
 		Verb:       "PUT",
-		Path:       "/"+server.URIParam("user_id"),
+		Path:       "/" + server.URIParam("user_id"),
 		Middleware: make([]string, 0),
 		Action:     Update,
 	}
-	Resource.Actions["Delete"] = &resource.ActionPath{ 	
+	Resource.Actions["Delete"] = &resource.ActionPath{
 		Verb:       "DELETE",
-		Path:       "/"+server.URIParam("user_id"),
+		Path:       "/" + server.URIParam("user_id"),
 		Middleware: make([]string, 0),
 		Action:     Delete,
 	}
@@ -249,7 +250,7 @@ func AuthMiddleware(action controller.Action) controller.Action {
 		var login string
 		var password string
 		fmt.Println("Auth Middleware ... ", login)
-		switch v := params["login"].(type) {
+		switch v := params["user_id"].(type) {
 		case string:
 			login = v
 		case []string:
@@ -259,9 +260,10 @@ func AuthMiddleware(action controller.Action) controller.Action {
 				return "NotOk", nil
 			}
 		default:
+			fmt.Println("got no user_id")
 			return "NotOk", nil
 		}
-		fmt.Println("Login ", login)
+		fmt.Println("user_id ", login)
 		switch v := params["password"].(type) {
 		case string:
 			password = v
@@ -269,9 +271,11 @@ func AuthMiddleware(action controller.Action) controller.Action {
 			if len(v) > 0 {
 				password = v[0]
 			} else {
+				fmt.Println("got no password")
 				return "NotOk", nil
 			}
 		default:
+			fmt.Println("got no password")
 			return "NotOk", nil
 		}
 		fmt.Println("Password ", password)

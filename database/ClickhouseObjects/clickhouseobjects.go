@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/ClickHouse/clickhouse-go"
@@ -94,7 +95,7 @@ var GetObjects = func(object_id string) (result []app.Object) {
 
 	var m = make(map[string]*app.Object)
 
-	rows, err := connect.Query("SELECT object_id,timestamp,value FROM example WHERE object_id LIKE '" + object_id + "/%'")
+	rows, err := connect.Query("SELECT object_id,timestamp,value FROM example WHERE object_id LIKE ? ORDER BY object_id,timestamp DESC limit 200 by object_id", object_id+"/%")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -112,11 +113,11 @@ var GetObjects = func(object_id string) (result []app.Object) {
 				Samples: make([]app.Sample, 0),
 			}
 		}
-		stime, _ := time.Parse("2006-01-02 15:04:05.9999", s.Timestamp)
-		var newSample = app.Sample{Timestamp: stime, Value: s.Value}
+		strs := strings.Split(s.Timestamp, " +")
+		var newSample = app.Sample{Timestamp: strs[0], Value: s.Value}
 		m[s.Object_id].Samples = append(m[s.Object_id].Samples, newSample)
 		m[s.Object_id].LastSample = newSample
-		log.Printf("object_id: %s,timestamp: %s,value: %.2f,", s.Object_id, s.Timestamp, s.Value)
+		//log.Printf("object_id: %s,timestamp: %s,value: %.2f,", s.Object_id, s.Timestamp, s.Value)
 	}
 	for _, val := range m {
 		result = append(result, *val)

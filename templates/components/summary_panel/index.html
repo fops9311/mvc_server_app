@@ -2,7 +2,27 @@
     <div class="container tile is-parent block is-fullheight">
       <div class="tile is-parent is-vertical">
       <div class="tile is-child has-text-centered box" style="width:100%;height: 80vh;">
-        <div class="has-text-centered" id="myControls" style="width:100%;height: 75vh;"></div>
+        <div class="has-text-centered" id="myControls" style="width:100%;height: 75vh;">
+
+          <form class="level" action="" method="POST" id="new_sample">
+            <span class="level-item">Adding samples to root/</span>
+            <div class="level-item field has-addons">
+              <div class="control">
+                <input class="input" type="text" placeholder="object_id"  name="object_id" id="object_id">
+              </div>
+              <div class="control">
+                <input class="input" type="number" step="0.01" name="sample_value" id="sample_value" placeholder="sample_value">
+              </div>
+              <div class="control">
+                <button class="button is-primary">
+                Add
+                </button>
+              </div>
+            </div>
+          </form>
+          <hr>
+
+        </div>
       </div>
     </div>
   </div>
