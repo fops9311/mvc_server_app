@@ -23,3 +23,6 @@ ifPageDisplayed(
     ()=>{document.getElementById("loginformTab").classList.remove("is-active")},
     loginformPage
 )
+refresh_object_list_callbacks.push(drawDirSelect)
+ifPageDisplayed(refresh_object_list,refresh_object_list,trend_panelPage)
+//refresh_object_list()

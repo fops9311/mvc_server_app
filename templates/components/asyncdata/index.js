@@ -4,7 +4,7 @@ var asyncCallbacks = []
 var appUser = localStorage.getItem("login")
 
 var pageDisplayCallbacks = []
-var REFRESH_RATE = 10000
+var REFRESH_RATE = 5000
 var app = {
     activePage: 0,
     auth: false,
@@ -42,7 +42,6 @@ function ifPageDisplayed(ifTrue,ifFalse,page_id){
     var t = function(){
         if (isActivePage(page_id)){
             ifTrue()
-            console.log(page_id)
         }
     }
     var f = function(){
@@ -54,24 +53,23 @@ function ifPageDisplayed(ifTrue,ifFalse,page_id){
     pageDisplayCallbacks.push(f)
     if (isActivePage(page_id)){
         t()
-        console.log(page_id)
     }else{
         f()
-        console.log(page_id)
     }
 }
     
 
 setInterval(refresh_userObjects,REFRESH_RATE)
 function refresh_userObjects() {
-    object_list = document.getElementById("object_list");
     fetch("/v1/users/"+localStorage.getItem("login")+"/objects?"+ new URLSearchParams({
         password: localStorage.getItem("password"),
+        subdir: localStorage.getItem("subdir"),
     }), {
         method: "GET",
     }).then(function(response) {
         return response.text().then(function(text) {
             userObjects = JSON.parse(text)
+            console.log(`[refresh_userObjects][network][result] userObjects.length:${userObjects.length};`);
             asyncCallbacks.forEach(
                 c=>{
                     if (c!=null){
@@ -80,4 +78,29 @@ function refresh_userObjects() {
                 })
         });
     });
+}
+
+var refresh_object_list_callbacks = []
+
+function refresh_object_list(){
+    object_list = document.getElementById("object_list");
+
+    fetch("/v1/users/"+localStorage.getItem("login")+"/objects?"+ new URLSearchParams({
+        password: localStorage.getItem("password"),
+        subdir: "",
+    }), {
+        method: "GET",
+    }).then(function(response) {
+        return response.text().then(function(text) {
+            userObjects = JSON.parse(text)
+            console.log(`[refresh_object_list][network][result] total_objects.length:${userObjects.length};`);
+            refresh_object_list_callbacks.forEach(
+                c=>{
+                    if (c!=null){
+                        c(userObjects)
+                    }
+                })
+        });
+    });
+
 }

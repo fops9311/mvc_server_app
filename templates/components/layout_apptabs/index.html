@@ -1,12 +1,18 @@
 <script>
     //inner_content_templates/components/asyncdata/index.js
 </script>
-<div class="tabs is-centered">
+<div class="tabs is-toggle">
     <ul>
+      <li class="">
+        <div class="select is-primary" style="max-width: 400px;margin: 5px;">
+          <select id="dirSelect" class="has-text-centered" onchange="dirSelectChanged();refresh_userObjects();">
+          </select>
+        </div>
+      </li>
       <li id="object_panelTab" class="is-active" onclick="displayPageById(object_panelPage)"><a>Objects</a></li>
       <li id="trend_panelTab" onclick="displayPageById(trend_panelPage)"><a>Trends</a></li>
       <li id="controls_panelTab" onclick="displayPageById(controls_panelPage)"><a>Controls</a></li>
-      <li id="loginformTab" onclick="displayPageById(loginformPage)"><a>Login</a></li>
+      <li id="loginformTab" onclick="displayPageById(loginformPage)"><a>User</a></li>
     </ul>
 </div>
 <div id="object_panelComponent">
@@ -22,5 +28,6 @@
     <inner_content_4/>
 </div>
 <script>
+    //inner_content_templates/components/layout_apptabs/func.js
     //inner_content_templates/components/layout_apptabs/index.js
 </script>

@@ -26,7 +26,7 @@ func init() {
 }
 func dbConnect() {
 	var err error
-	connect, err = sql.Open("clickhouse", "tcp://127.0.0.1:19000?debug=true")
+	connect, err = sql.Open("clickhouse", "tcp://127.0.0.1:19000") //?debug=true
 	if err != nil {
 		log.Fatal(err)
 	}

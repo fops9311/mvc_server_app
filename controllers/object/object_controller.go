@@ -122,11 +122,22 @@ func init_begin() {
 		switch v := params["subdir"].(type) {
 		case string:
 			subdir = "/" + v
+		case []string:
+			if len(v) > 0 {
+				if v[0] == "" {
+					subdir = ""
+				} else {
+					subdir = "/" + v[0]
+				}
+			} else {
+				subdir = ""
+			}
 		default:
 			subdir = ""
 		}
 
 		b, err := json.Marshal(app.Objects.GetObjects(user_id + subdir))
+		fmt.Printf("[debug][object_controller_index]app.Objects.GetObjects(%s) subdir type = %T\n", user_id+subdir, params["subdir"])
 		return string(b), err
 	}
 	Index1 := func(params map[string]interface{}) (result string, err error) {
