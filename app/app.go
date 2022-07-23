@@ -78,7 +78,7 @@ type Object struct {
 	LastSample Sample
 }
 type Sample struct {
-	Timestamp string
+	Timestamp int64
 	Value     float32
 }
 

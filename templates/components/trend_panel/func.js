@@ -76,7 +76,7 @@ var trendlayout = ()=>{return {
     xaxis: {
       autorange: false,
       //rangeslider: {range: [customDateFormat(new Date(Date.now() - 600000)), customDateFormat(new Date(Date.now() + 600000))]},
-      range: [customDateFormat(new Date(Date.now() - 600000 + 10800000)), customDateFormat(new Date(Date.now() + 10800000 + 30000))],
+      range: [customDateFormat(new Date(Date.now() - 6000000 + 10800000)), customDateFormat(new Date(Date.now() + 10800000 + 30000))],
       type: 'date'
     },
     yaxis: {
@@ -104,9 +104,14 @@ console.log(tranformSamplesTrace(
 console.log("END_______________________________________________")
 
 function tranformSamplesTrace(samples,id){
+
+  const date = new Date();
+  const offset = date.getTimezoneOffset();
+  //console.log(offset);    // -300 timezone offset in minutes
+
     var trace = {
         type:"scatter",
-        mode:"lines+markers",
+        mode:"lines",
         name:transformIds1(id),
         x:[],
         y:[],
@@ -116,10 +121,11 @@ function tranformSamplesTrace(samples,id){
         }
     }
     samples.sort((a, b) => a.Timestamp > b.Timestamp).forEach(s=>{
-        trace.x.push(s.Timestamp)//.replace("T"," "))
+        trace.x.push(customDateFormat(new Date(Date.now() - Date.now() + s.Timestamp/1000000 - offset*1000*60)))//.replace("T"," "))
         trace.y.push(s.Value)
     })
     console.log(`[tranformSamplesTrace][result] trace sample length:${trace.x.length}; trace name:${trace.name}`);
+    console.log(trace);
     return trace
 }
 
