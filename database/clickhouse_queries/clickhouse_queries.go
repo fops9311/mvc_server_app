@@ -119,7 +119,7 @@ func example() error {
 		if err := rows.Scan(&col1, &col2, &col3); err != nil {
 			return err
 		}
-		fmt.Printf("row: col1=%d, col2=%s, col3=%s\n", col1, col2, col3)
+		//fmt.Printf("row: col1=%d, col2=%s, col3=%s\n", col1, col2, col3)
 	}
 	rows.Close()
 	return rows.Err()

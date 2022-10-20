@@ -5,7 +5,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"log"
 	"strconv"
+	"sync"
+	"time"
 
 	app "github.com/fops9311/mvc_server_app/app"
 	user_controller "github.com/fops9311/mvc_server_app/controllers/user"
@@ -113,6 +116,8 @@ func init_begin() {
 		var user_id string
 		var subdir string
 		switch v := params["user_id"].(type) {
+		case []string:
+			user_id = v[0]
 		case string:
 			user_id = v
 		default:
@@ -137,7 +142,7 @@ func init_begin() {
 		}
 
 		b, err := json.Marshal(app.Objects.GetObjects(user_id + subdir))
-		fmt.Printf("[debug][object_controller_index]app.Objects.GetObjects(%s) subdir type = %T\n", user_id+subdir, params["subdir"])
+		log.Printf("[debug][object_controller_index]app.Objects.GetObjects(%s) subdir type = %T\n", user_id+subdir, params["subdir"])
 		return string(b), err
 	}
 	Index1 := func(params map[string]interface{}) (result string, err error) {
@@ -178,7 +183,7 @@ func init_continue() {
 		Verb:       "GET",
 		Path:       "",
 		Middleware: make([]string, 0),
-		Action:     user_controller.AuthMiddleware(Index),
+		Action:     user_controller.AuthMiddleware(RequestTicketMiddleware(Index)),
 	}
 }
 
@@ -204,4 +209,110 @@ var SampleNew controller.Action = func(params map[string]interface{}) (result st
 	err = view.SampleNew(params, buf)
 
 	return buf.String(), err
+}
+
+type ticketBucket struct {
+	sync.Mutex
+	left int
+	max  int
+}
+
+func (tb *ticketBucket) init(max int) {
+	tb.Lock()
+	defer tb.Unlock()
+	tb.max = max
+	tb.left = max
+}
+
+const (
+	takeSuccess = true
+	takeFail    = false
+)
+
+func (tb *ticketBucket) take() (result bool) {
+	tb.Lock()
+	defer tb.Unlock()
+	if tb.left > 0 {
+		tb.left -= 1
+		return takeSuccess
+	} else {
+		return takeFail
+	}
+}
+func (tb *ticketBucket) put() {
+	tb.Lock()
+	defer tb.Unlock()
+	if tb.left < tb.max {
+		tb.left += 1
+	}
+}
+
+type ticketBuckets struct {
+	sync.Mutex
+	m map[string]*ticketBucket
+}
+
+func (b *ticketBuckets) take(bucket_id string, max int) (result bool) {
+	var bucket *ticketBucket
+	if _, ok := b.m[bucket_id]; !ok {
+		bucket = &ticketBucket{}
+		bucket.init(max)
+		b.m[bucket_id] = bucket
+	} else {
+		bucket = b.m[bucket_id]
+	}
+	return bucket.take()
+}
+func newTicketBuckets(intervalms int) (result *ticketBuckets) {
+	result = &ticketBuckets{}
+	result.m = make(map[string]*ticketBucket)
+	go func() {
+		for {
+			<-time.NewTimer(time.Duration(intervalms) * time.Millisecond).C
+			result.Lock()
+			for k := range result.m {
+				result.m[k].put()
+			}
+			result.Unlock()
+		}
+	}()
+	return result
+}
+
+var middlewareTickets = newTicketBuckets(4000)
+
+func RequestTicketMiddleware(action controller.Action) controller.Action {
+	return func(params map[string]interface{}) (result string, err error) {
+		var user_id string
+		var subdir string
+		switch v := params["user_id"].(type) {
+		case []string:
+			user_id = v[0]
+		case string:
+			user_id = v
+		default:
+			user_id = ""
+		}
+
+		switch v := params["subdir"].(type) {
+		case string:
+			subdir = "/" + v
+		case []string:
+			if len(v) > 0 {
+				if v[0] == "" {
+					subdir = ""
+				} else {
+					subdir = "/" + v[0]
+				}
+			} else {
+				subdir = ""
+			}
+		default:
+			subdir = ""
+		}
+		if middlewareTickets.take(fmt.Sprintf("%s/%s", user_id, subdir), 10) {
+			return action(params)
+		}
+		return "{}", nil
+	}
 }
